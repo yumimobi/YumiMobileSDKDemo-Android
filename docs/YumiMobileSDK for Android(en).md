@@ -933,10 +933,10 @@ At present, Mintegral platform the Android SDK does not support Android9.0 or ab
 
 ## 6. Test Slot ID
  
-| Formats              | Slot(Placement) ID                                                                                                                         | Note                                                                                                                                 |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Banner                 | uz852t89                                                                                                                                   | Using this test ID, you are able to get test ads which are from YUMI, AdMob, AppLovin, Baidu, IQzone                                                  |
-| Interstitial | 56ubk22h | Using this test ID, you are able to get test ads which are form YUMI, AdMob, AppLovin, Baidu, IronSource, InMobi, IQzone, Unity Ads, Vungle, ZPLAYAds |
-| Rewarded Video         | ew9hyvl4                                                                                                                                   | Using this test ID, you can get test ads which are from YUMI, AdMob, AppLovin, GDTMob, IronSource, InMobi, IQzone, Unity Ads, Vungle, ZPLAYAds |
-| Native                 | dt62rndy                                                                                                                                   | You can get test ads which are from YUMI, AdMob, Baidu, GDTMob, Facebook by using this test ID                                        |
-| Splash                 | vv7snvc5                                                                                                                                   | For now, Only YUMI platform returns test ads by use this test ID                                                                             |
+| Formats              | Slot(Placement) ID       |
+| -------------------- | -----------------------| 
+| Banner                | uz852t89   | 
+| Interstitial          | 56ubk22h | 
+| Rewarded Video         | ew9hyvl4 | 
+| Native                 | dt62rndy | 
+| Splash                 | vv7snvc5 | 
