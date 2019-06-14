@@ -941,10 +941,10 @@ YumiMobileSDK会通过play-services-ads:17.1.3获取advertising_Id，需要添�
 
 ## 6. 测试广告位
  
-| 广告类型               | Slot(Placement) ID                                                                                                                | 备注                                                                                                                               |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Banner                 | uz852t89                                                                                                                          | 使用此test id，可以测试到YUMI、AdMob、AppLovin、Baidu、IQzone等平台的测试广告                                                 |
-| Interstitial |  56ubk22h | 使用此test id，可以测试到YUMI、AdMob、AppLovin、Baidu、IronSource、InMobi、IQzone、Unity Ads、Vungle、ZPLAYAds等平台的测试广告 |
-| Rewarded Video         | ew9hyvl4                                                                                                                          | YUMI、AdMob、AppLovin、GDTMob、IronSource、InMobi、IQzone、Unity Ads、Vungle、ZPLAYAds等平台的测试广告可以使用此test id进行测试 |
-| Native                 | dt62rndy                                                                                                                          | YUMI、AdMob、Baidu、GDTMob、Facebook等平台可以使用此test id进行测试                                        |
-| Splash                 | vv7snvc5                                                                                                                          | 使用此test id，只能测试到YUMI平台的测试广告                                                                                                     |
+| 广告类型               | Slot(Placement) ID    | 
+| ---------------------- | -------------- |
+| Banner                 | uz852t89       | 
+| Interstitial           |  56ubk22h      | 
+| Rewarded Video         | ew9hyvl4       | 
+| Native                 | dt62rndy       | 
+| Splash                 | vv7snvc5       | 
