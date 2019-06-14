@@ -9,18 +9,17 @@
          * [Rewarded Video](#rewarded-video)
          * [Splash](#splash)
          * [Native](#native)
-      * [4. Test Mode](#4-test-mode)
-      * [5. Advanced Features](#5-advanced-features)
+      * [4. Advanced Features](#4-advanced-features)
          * [Banner](#banner-1)
          * [Interstitial](#interstitial-1)
          * [Rewarded Video](#rewarded-video-1)
          * [Splash](#splash-1)
          * [Proguard](#proguard)
-      * [6. Precautions](#6-precautions)
+      * [5. Precautions](#5-precautions)
          * [1. Permissions for Android 6.0 and newer versions](#1-permissions-for-android-60-and-newer-versions)
          * [2. Google Play Server 17.0.0 or higher version configuration](#2-google-play-server-1700-or-higher-version-configuration)
          * [3. Android9.0 compatibility considerations](#3-android90-compatibility-considerations)
-      * [7. Test Slot ID](#7-test-slot-id)
+      * [6. Test Slot ID](#6-test-slot-id)
 
 # YumiMobileSDK Android
 	
@@ -152,49 +151,49 @@ google_play_service is not mandatory, while some ad platforms need it. YUMIMOBI 
 Add following in manifest.xml of your project:
 
 ```xml
-       <receiver android:name="com.yumi.android.sdk.ads.self.module.receiver.ADReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
+    <receiver android:name="com.yumi.android.sdk.ads.self.module.receiver.ADReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+        </intent-filter>
+    </receiver>
 
-        <activity
-            android:name="com.yumi.android.sdk.ads.self.activity.YumiFullScreenActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.yumi.android.sdk.ads.self.activity.YumiFullScreenActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.APIAdActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.APIAdActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.PlayableADActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.PlayableADActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.NativeAdLandingPageActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.NativeAdLandingPageActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.WebActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.WebActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <receiver android:name="com.playableads.PlayableReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
-        
-       <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" ></activity> 
+    <receiver android:name="com.playableads.PlayableReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+        </intent-filter>
+    </receiver>
+    
+    <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" ></activity> 
 ```
 
 ## 3. Integration
@@ -347,7 +346,7 @@ if (media != null) {
 }
 ```
 
-<p><span style="color:red;">Note: It is recommended to request every five seconds.</span></p>
+<p><span style="color:red;">Note: It is recommended not to request frequently, the request interval is more than 5 seconds.</span></p>
 
 **When you need to show rewarded video, call the following code:**
 
@@ -685,63 +684,7 @@ protected void onDestroy()
 ```
 
 
-## 4. Test Mode 
-
-**YUMI SDK provideds a test mode to test your 3rd-party Integrations.** 
-
-<img src="document\image10.png" alt="img3">
-
-**Use Steps:** 
-
-1、Call method to open test page :
-
-YumiSettings.startDebugging(Activity,BannerSlotID,InterstitialSlotID,MediaSlotID,NativeSloatID); 
-
-If you set the version, channel, according to your need to set the channel in the platform configuration, version call method to open the debug page:
-
-YumiSettings.startDebugging (Activity, BannerSlotID,InterstitialSlotID,MediaSlotID,NativeSloatID, channelID, versionName);
-
-2、The Yumi SDK will detect the platform accessed in the application and display the acquired platform in the platform list, and go to the debug page:
-
-  1）&nbsp;debug page：
-
-<img src="document\image08.png" alt="img4" width="200" height="355">
- 
- debug page explain:
-
- * If the platform name is not displayed in the platform list，explain that the developer no add  this 
-platform
-
- * If the platform name is green,the Yumi server have configured this platform
- * If the platform name is gray,the Yumi server not have configured this platform
-
-3、If the platform name is gray，click this platform,will show warning：
-
-<img src="document\image09.png" alt="img4" width="200" height="355">
-
-4、If the platform name is green, you can click on this platform to debug:
-
-  1）When SDK Available is green, it means that the three-party platform adapter has been added. When it is red, it indicates that the three-party platform adapter has not been added. Go back to Add lib file to check whether the platform adapter has been added
-
-  2）When the Configuration present is green, the three-party platform adapter Manifest is registered. When it is red, it means that the Manifest of the three-party platform adapter component is not registered, which can be returned to Add permission to check whether the platform adapter component has been added
-
-  3）Failed SDK to start or No_fill is green to indicate that the advertisement has been shown successfully. When it is red, it means that the advertisement has not been shown successfully. You can proceed to the next step. If all the steps are not red after completion, please email us at : support@yumimobi.com
-
-<img src="document\image06.jpg" alt="img4" width="200" height="355">
-
-5、Demand Available? Click Fetch to request ad. A fetch will generate an ad download.  You will get a text response confirming the ad download, or instead an error.
-
-6、Ad Displayed? Click Show to display an ad.  When ad shows properly, all test elements will turn green, which indicates this platform has been integrated successfully, at least for that ad type.
-
-Below is a sample screen of some banner ads that were fetched from Baidu ad network and displayed.  The HIDE button simple allows the developer to test the SDK’s hide feature.
-
-<img src="document\image07.jpg" alt="img4" width="200" height="355">
-
-7、The debugging mode must be completed before releasing the App.
-
-
-
-## 5. Advanced Features 
+## 4. Advanced Features 
 
 - ### Banner
 
@@ -957,7 +900,7 @@ If you are using Proguard add the following to your Proguard config file:
 -keep class com.playableads.**{*;}
 ```
 
-## 6. Precautions
+## 5. Precautions
 
 ### 1. Permissions for Android 6.0 and newer versions
 
@@ -988,7 +931,7 @@ At present, Mintegral platform the Android SDK does not support Android9.0 or ab
 
 
 
-## 7. Test Slot ID
+## 6. Test Slot ID
  
 | Formats              | Slot(Placement) ID                                                                                                                         | Note                                                                                                                                 |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
