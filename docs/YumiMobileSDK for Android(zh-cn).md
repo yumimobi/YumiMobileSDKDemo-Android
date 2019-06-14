@@ -1,4 +1,4 @@
-* [YumiMediationSDK Android](#yumimediationsdk-android)
+* [YumiMobileSDK Android](#yumimobilesdk-android)
     * [1. 概述](#1-概述)
     * [2. 开发环境配置](#2-开发环境配置)
         * [Android-studio 接入](#android-studio-接入)
@@ -22,7 +22,7 @@
         * [3. android 9.0 适配](#3-android-90-适配)
     * [7. 测试广告位](#7-测试广告位)
 
-# YumiMediationSDK Android
+# YumiMobileSDK Android
 
 ## 1. 概述
 
@@ -975,7 +975,7 @@ YumiSettings.runInCheckPermission(true);
 
 ### 2. Google play Server 17.0.0 版本以上配置
 
-YumiMediationSDK会通过play-services-ads:17.1.3获取advertising_Id，需要添加如下配置，避免程序崩溃，以下内容引用自[google官方文档](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#update_your_androidmanifestxml)：
+YumiMobileSDK会通过play-services-ads:17.1.3获取advertising_Id，需要添加如下配置，避免程序崩溃，以下内容引用自[google官方文档](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#update_your_androidmanifestxml)：
 
 通过在 AndroidManifest.xml 中添加以下 <meta-data> 标记，声明您的应用是 Ad Manager 应用。
 

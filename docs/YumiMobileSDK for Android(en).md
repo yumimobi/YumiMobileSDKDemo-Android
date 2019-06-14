@@ -1,4 +1,4 @@
-   * [YumiMediationSDK Android](#yumimediationsdk-android)
+   * [YumiMobileSDK Android](#yumimobilesdk-android)
       * [1. Overview](#1-overview)
       * [2. Development Environment Configuration](#2-development-environment-configuration)
          * [Using Android-studio](#using-android-studio)
@@ -22,7 +22,7 @@
          * [3. Android9.0 compatibility considerations](#3-android90-compatibility-considerations)
       * [7. Test Slot ID](#7-test-slot-id)
 
-# YumiMediationSDK Android
+# YumiMobileSDK Android
 	
 ## 1. Overview
 
@@ -970,7 +970,7 @@ YumiSettings.runInCheckPermission(true);
 
 
 ### 2. Google Play Server 17.0.0 or higher version configuration
-YumiMediationSDK will use the play-services-ads:17.1.3 to obtain the advertising_Id. You need to add the following configuration to avoid the program crash. The following content is quoted from [Google Developers](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#update_your_androidmanifestxml)：
+YumiMobileSDK will use the play-services-ads:17.1.3 to obtain the advertising_Id. You need to add the following configuration to avoid the program crash. The following content is quoted from [Google Developers](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#update_your_androidmanifestxml)：
 
 Declare that your app is an Ad Manager app by adding the following <meta-data> tag in your AndroidManifest.xml.
 
