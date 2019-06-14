@@ -42,7 +42,7 @@
 
 - ### Using Android-studio
 
-**Add the library**
+**Step 1.Add the library**
 
 ```java
 // ensure whether jcenter is supported in build.gradle under Project root directory of android studio 

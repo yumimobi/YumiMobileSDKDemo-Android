@@ -41,7 +41,7 @@
 
 - ### Android-studio 接入
 
-**第一步：添加聚合主包依赖**
+**第一步：添加SDK依赖**
 
 ```java
 //确认 android studio 的 Project 根目录主 build.gradle 中配置了 jcenter 支持。
@@ -69,39 +69,7 @@ dependencies {
 >最新版本号，请[查看](https://github.com/yumimobi/YumiMobileSDKDemo-Android#latest-version)
 > 
 
-**第二步：添加聚合平台Adapter依赖**
-
-```java
-//在 module 的 build.gradle 中添加依赖
-dependencies {
-    //(*.*.*) 请替换为最新的SDK版本号，如：3.6.3
-    implementation 'com.yumimobi.ads.mediation:adcolony:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:applovin:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:admob:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:baidu:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:chartboost:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:facebook:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:gdt:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:ksyun:3.6.3'
-    implementation 'com.yumimobi.ads.mediation:ironsource:3.6.3'
-    implementation 'com.yumimobi.ads.mediation:inmobi:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:oneway:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:unity:*.*.*'
-//    If you publish an app in China,you can use unity-china sdk
-//    compile 'com.yumimobi.ads.mediation:unity-china:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:vungle:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:mintegral:*.*.*'
-//    If you publish an app in China,you can use mintegral-china sdk
-//    compile 'com.yumimobi.ads.mediation:mintegral-china:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:playableads:*.*.*'
-    implementation 'com.yumimobi.ads.mediation:iqzone:*.*.*'
-｝
-```
-
->聚合平台详细说明，请[查看](https://github.com/yumimobi/YumiMediationSDKDemo-Android/blob/master/docs/YumiMediationSDK%20-%20Mediation%20List(zh-cn)%20.md)
-> 
-
-**第三步：添加权限**
+**第二步：添加权限**
 
 - 可选权限
 
@@ -122,7 +90,7 @@ dependencies {
 
 - ### Eclipse 接入
 
-**第一步：添加聚合主包SDK lib目录文件：**
+**第一步：添加SDK lib目录文件：**
 
 >[SDK 下载](http://adsdk.yumimobi.com/Android/Android_Mediation/3.6.3/YumiMobi_SDK_Android_V3.6.3.zip)
 
