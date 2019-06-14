@@ -68,7 +68,7 @@ dependencies {
 ｝
 ```
 
->[Click here](https://github.com/yumimobi/YumiMediationSDKDemo-Android#Latest&nbsp;Version) get latest version number
+>[Click here](https://github.com/yumimobi/YumiMobileSDKDemo-Android#latest-version) get latest version number
 > 
 
  **Step 2. Add permission**

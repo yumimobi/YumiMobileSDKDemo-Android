@@ -66,7 +66,7 @@ dependencies {
 ｝
 ```
 
->最新版本号，请[查看](https://github.com/yumimobi/YumiMediationSDKDemo-Android#latest-version)
+>最新版本号，请[查看](https://github.com/yumimobi/YumiMobileSDKDemo-Android#latest-version)
 > 
 
 **第二步：添加聚合平台Adapter依赖**
