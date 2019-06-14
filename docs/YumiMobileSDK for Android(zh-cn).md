@@ -9,18 +9,17 @@
         * [激励视频](#激励视频)
         * [开屏](#开屏)
         * [原生广告](#原生广告)
-    * [4. 调试模式](#4-调试模式)
-    * [5. 高级功能](#5-高级功能)
+    * [4. 高级功能](#4-高级功能)
         * [横幅](#横幅-1)
         * [插屏](#插屏-1)
         * [激励视频](#激励视频-1)
         * [开屏](#开屏-1)
         * [混淆](#混淆)
-    * [6. 注意事项](#6-注意事项)
+    * [5. 注意事项](#5-注意事项)
         * [1. Android6.0以上系统权限处理](#1-android60以上系统权限处理)
         * [2. Google play Server 17.0.0 版本以上配置](#2-google-play-server-1700-版本以上配置)
         * [3. android 9.0 适配](#3-android-90-适配)
-    * [7. 测试广告位](#7-测试广告位)
+    * [6. 测试广告位](#6-测试广告位)
 
 # YumiMobileSDK Android
 
@@ -689,61 +688,7 @@ protected void onDestroy()
 }
 ```
 
-## 4. 调试模式 
-
-**玉米广告SDK为开发者提供了一个检测三方平台集成状态的调试模式，如图：** 
-
-<img src="document\image10.png" alt="img3">
-
-**使用步骤：** 
-
-1、调用方法打开调试页面：
-
-YumiSettings.startDebugging(Activity,BannerSlotID,InterstitialSlotID,MediaSlotID,NativeSloatID); 
-
-如果设置了版本、渠道，根据您在平台的配置需要设置渠道、版本调用方法打开调试页面：
-
-YumiSettings.startDebugging (Activity, BannerSlotID,InterstitialSlotID,MediaSlotID, NativeSloatID,channelID, versionName);
-
-2、玉米SDK将检测开发者接入的平台，并将获取到的平台展示在平台列表中，进入debug页面：
-
-  1）&nbsp; debug 页面：
-
-<img src="document\image08.png" alt="img4" width="200" height="355">
-  
-  debug 页面说明：
-
-* 如果平台名称没有在平台列表中，说明开发者没有接入此平台
-
-* 如果平台名称为绿色，说明服务端配置了当前平台。
-* 如果平台名称为灰色，说明服务端未配置当前平台。
-
-3、如果平台名称为灰色，点击此平台，会显示警告：
-
-<img src="document\image09.png" alt="img4" width="200" height="355">
-
-
-4、如果平台名称为绿色，你可以点击此平台进行调试：
-
-  1）SDK Available 为绿色时表示三方平台适配器已添加；当为红色时表示三方平台适配器未添加，回到文档添加lib文件部分检查该平台adapter是否添加
-
-  2）Configuration present为绿色时表示三方平台适配器组件Manifest已注册；当为红色时表示三方方平台适配器组件Manifest未注册，可回到文档注册组件部分检查该平台适配器组件是否添加
-
-  3）SDK Failed to start or No_fill 为绿色表示广告曾经展示成功过；当为红色时表示还未展示成功过广告， 可继续进行下一个步骤，如果所有步骤完成后仍为红色，请邮件联系我们： support@yumimobi.com
-
-<img src="document\image06.jpg" alt="img4" width="200" height="355">
-
-
-5、点击Fetch开始请求广告，点击Show展示广告
-
-6、广告展示成功后检查项全部变为绿色，表示该家平台接入成功
-
-<img src="document\image07.jpg" alt="img4" width="200" height="355">
-
-7、应用发布前需要将调试模式注释掉。
-
-
-## 5. 高级功能 
+## 4. 高级功能 
 
 - ### 横幅
 
@@ -961,7 +906,7 @@ splashListener = new SplashADListener () {
 -keep class com.playableads.**{*;}
 ```
 
-## 6. 注意事项
+## 5. 注意事项
 
 
 ### 1. Android6.0以上系统权限处理
@@ -994,7 +939,7 @@ YumiMobileSDK会通过play-services-ads:17.1.3获取advertising_Id，需要添�
 1. 将targaetSDKveriosn设置为27或者27以下。 
 
 
-## 7. 测试广告位
+## 6. 测试广告位
  
 | 广告类型               | Slot(Placement) ID                                                                                                                | 备注                                                                                                                               |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
