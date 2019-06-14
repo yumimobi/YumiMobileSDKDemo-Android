@@ -125,49 +125,49 @@ google_play_service工程非必加，部分平台广告需要google_play_service
 如以jar包方式接入SDK，请在工程中的manifest.xml文件中添加：
 
 ```xml
-      <receiver android:name="com.yumi.android.sdk.ads.self.module.receiver.ADReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
+    <receiver android:name="com.yumi.android.sdk.ads.self.module.receiver.ADReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+        </intent-filter>
+    </receiver>
 
-        <activity
-            android:name="com.yumi.android.sdk.ads.self.activity.YumiFullScreenActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.yumi.android.sdk.ads.self.activity.YumiFullScreenActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.APIAdActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.APIAdActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.PlayableADActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.PlayableADActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.NativeAdLandingPageActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.NativeAdLandingPageActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.WebActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.WebActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <receiver android:name="com.playableads.PlayableReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
-        
-       <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" ></activity> 
+    <receiver android:name="com.playableads.PlayableReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+        </intent-filter>
+    </receiver>
+    
+    <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" ></activity> 
 ```
 
 **第三步：添加权限**
@@ -349,7 +349,7 @@ if (media != null) {
 }
 ```
 
-<p><span style="color:red;">注意：建议调用间隔5秒一次。</span></p>
+<p><span style="color:red;">注意：建议不要频繁调用，调用间隔时间5秒以上。</span></p>
 
 **请在需要展现视频广告的时候，调用以下代码：**
 

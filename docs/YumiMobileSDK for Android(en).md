@@ -151,49 +151,49 @@ google_play_service is not mandatory, while some ad platforms need it. YUMIMOBI 
 Add following in manifest.xml of your project:
 
 ```xml
-       <receiver android:name="com.yumi.android.sdk.ads.self.module.receiver.ADReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
+    <receiver android:name="com.yumi.android.sdk.ads.self.module.receiver.ADReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+        </intent-filter>
+    </receiver>
 
-        <activity
-            android:name="com.yumi.android.sdk.ads.self.activity.YumiFullScreenActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.yumi.android.sdk.ads.self.activity.YumiFullScreenActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.APIAdActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.APIAdActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.PlayableADActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.PlayableADActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.NativeAdLandingPageActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.NativeAdLandingPageActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <activity
-            android:name="com.playableads.presenter.WebActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <activity
+        android:name="com.playableads.presenter.WebActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
-        <receiver android:name="com.playableads.PlayableReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
-        
-       <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" ></activity> 
+    <receiver android:name="com.playableads.PlayableReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+        </intent-filter>
+    </receiver>
+    
+    <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" ></activity> 
 ```
 
 ## 3. Integration
@@ -346,7 +346,7 @@ if (media != null) {
 }
 ```
 
-<p><span style="color:red;">Note: It is recommended to request every five seconds.</span></p>
+<p><span style="color:red;">Note: It is recommended not to request frequently, the request interval is more than 5 seconds.</span></p>
 
 **When you need to show rewarded video, call the following code:**
 
