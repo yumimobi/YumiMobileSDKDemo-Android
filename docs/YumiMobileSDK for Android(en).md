@@ -1,20 +1,40 @@
    * [YumiMobileSDK Android](#yumimobilesdk-android)
       * [1. Overview](#1-overview)
+         * [1.1 Target Readers](#11-target-readers)
+         * [1.2 Development Environment](#12-development-environment)
       * [2. Development Environment Configuration](#2-development-environment-configuration)
-         * [Using Android-studio](#using-android-studio)
-         * [Using Eclipse](#using-eclipse)
+         * [2.1 Android Studio](#21-android-studio)
+         * [2.2 Eclipse](#22-eclipse)
       * [3. Integration](#3-integration)
-         * [Banner](#banner)
-         * [Interstitial](#interstitial)
-         * [Rewarded Video](#rewarded-video)
-         * [Splash](#splash)
-         * [Native](#native)
-      * [4. Advanced Features](#4-advanced-features)
-         * [Banner](#banner-1)
-         * [Interstitial](#interstitial-1)
-         * [Rewarded Video](#rewarded-video-1)
-         * [Splash](#splash-1)
-         * [Proguard](#proguard)
+         * [3.1 Banner](#31-banner)
+            * [3.1.1 Initialization and request](#311-initialization-and-request)
+            * [3.1.2 Destroy](#312-destroy)
+            * [3.1.3 Add Listener](#313-add-listener)
+            * [3.1.4 Other methods](#314-other-methods)
+         * [3.2 Interstitial](#32-interstitial)
+            * [3.2.1 Initialization and request](#321-initialization-and-request)
+            * [3.2.2 Display and Destroy](#322-display-and-destroy)
+            * [3.2.3 Add Listener](#323-add-listener)
+            * [3.2.4 Other methods](#324-other-methods)
+         * [3.3 Rewarded Video](#33-rewarded-video)
+            * [3.3.1 Initialization and request](#331-initialization-and-request)
+            * [3.3.2 Display and Destroy](#332-display-and-destroy)
+            * [3.3.3 Add Listener](#333-add-listener)
+            * [3.3.4 Other methods](#334-other-methods)
+         * [3.4 Splash](#34-splash)
+            * [3.4.1 Initialization and request](#341-initialization-and-request)
+            * [3.4.2 Add Listener](#342-add-listener)
+            * [3.4.3 Other methods](#343-other-methods)
+         * [3.5 Native](#35-native)
+            * [3.5.1 Initialization and request](#351-initialization-and-request)
+            * [3.5.2 Add litener](#352-add-litener)
+            * [3.5.3 Display ad](#353-display-ad)
+            * [3.5.4 Other settings](#354-other-settings)
+      * [4. Other settings](#4-other-settings)
+         * [4.1 Proguard](#41-proguard)
+         * [4.2 channelID and versionName](#42-channelid-and-versionname)
+         * [4.3 GDPR](#43-gdpr)
+            * [4.3.1 Set GDPR](#431-set-gdpr)
       * [5. Precautions](#5-precautions)
          * [1. Permissions for Android 6.0 and newer versions](#1-permissions-for-android-60-and-newer-versions)
          * [2. Google Play Server 17.0.0 or higher version configuration](#2-google-play-server-1700-or-higher-version-configuration)
@@ -22,76 +42,77 @@
       * [6. Test Slot ID](#6-test-slot-id)
 
 # YumiMobileSDK Android
-	
 ## 1. Overview
-
-**1.1 Target Readers**
-
-   This document is for Android developers who want to integrate YUMIMOBI advertising SDK into their product.  
-
-**1.2 Development Environment**
-
-   OS：  Windows， Mac， Linux <br />
-   Android SDK：&ensp;&gt;&ensp;4.4&ensp;(API level 19)<br />
-   IDE： Eclipse with ADT (ADT version 23.0.4)&ensp;&ensp;OR&ensp;&ensp;Android-studio<br />
-   Java：&ensp;&gt;&ensp;JDK 7
+### 1.1 Target Readers
+This document is for Android developers who want to integrate YUMIMOBI advertising SDK into their product.
+   
+### 1.2 Development Environment
+OS: Windows, Mac, Linux <br/>
+Android SDK: > 4.4(API level 19)<br/>
+IDE: Eclipse with ADT (ADT version 23.0.4) OR Android-Studio<br />
+Java: > JDK 7
 
 ## 2. Development Environment Configuration
+### 2.1 Android Studio
 
+add YumiMobileSDK and other network adapters maven url to project's build.gradle
 
-- ### Using Android-studio
-
-**Step 1.Add the library**
-
-```java
-// ensure whether jcenter is supported in build.gradle under Project root directory of android studio 
+```groovy
 buildscript {
     repositories {
-   	 jcenter()
+        jcenter()
     }
 }
+
 allprojets {
     repositories {
     	jcenter()
+
+        // Optional,It is required when you import SDKs related to Google Server.
         maven {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        
+        // Optional,If you do not need the ksyun SDK, you can remove the maven url.
+        maven { url "https://dl.bintray.com/yumimobi/thirdparty/" }
+        maven { url "https://dl.bintray.com/yumimobi/ads/" }
+
+        // Optional,If you do not need the Iqzone SDK, you can remove the maven url.
+        maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
     }
 }
-//Add dependency in module build. Gradle
+```
+
+add YumiMobileSDK and other adapters dependencies.
+
+```groovy
 dependencies {
-    //(*.*.*) Please replace it with the latest SDK version number, example ：3.6.3
-    implementation 'com.yumimobi.ads:mediation:*.*.*'
-    
+    // YumiMobileSDK main package
+    implementation 'com.yumimobi.ads:mediation:4.1.0'
 ｝
 ```
 
->[Click here](https://github.com/yumimobi/YumiMobileSDKDemo-Android#latest-version) get latest version number
-> 
-
- **Step 2. Add permission**
-
- * Optional permission
+Optional permission.
 
 ```xml
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-<uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<!--The Googleplay app can be unloaded-->
+<uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+<!-- The Googleplay app can be unloaded -->
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <!-- If no add READ_PHONE_STATE permission will affect the advertising earnings -->
 <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 ```
 
-- ### Using Eclipse
+ ### 2.2 Eclipse
 
-**Step 1. Add lib file**
+Add library file to libs.
 
->[SDK Download](http://adsdk.yumimobi.com/Android/Android_Mediation/3.6.3/YumiMobi_SDK_Android_V3.6.3.zip)
+>[SDK Download](http://adsdk.yumimobi.com/Android/Android_Mediation/4.1.0/YumiMobi_SDK_Android_V4.1.0.zip)
 
 All lib files are placed in ..\YumiMobi_SDK_AndroidEclipse_Example\lib in the SDK:
 
@@ -101,52 +122,26 @@ All lib files are placed in ..\YumiMobi_SDK_AndroidEclipse_Example\lib in the SD
 
 - android-support-v7-appcompat.jar
 
-- google_play_service的lib工程
+- google_play_service 
 
 Create libs folder under the root directory of your project,add YumiMobi_Android_vX.X.X.jar into libs.
 
-<img src="document\image01.jpg" alt="img1">
+<img src="./document/image01.jpg" alt="img1">
 
 you can choose to or not to add android-support-v4.jar and/or android-support-v7-appcompat.jar into libs according to your needs. You must use the jar file provided by YUMIMOBI when you need to use v4.jar or v7.jar.
 
-<span style="color:red;">
-About google_play_service project:  
-google_play_service is not mandatory, while some ad platforms need it. YUMIMOBI does not need google_play_service. You need use it as a library  and import it into your project. Also, add the ollowing code in tab &lt;application&gt; of your manifest.xml.
-</span>
+<div style="background-color:rgb(228,244,253);padding:10px;">
+<span style="color:rgb(62,113,167);">About google_play_service project: google_play_service is not mandatory, while some ad platforms need it. YUMIMOBI does not need google_play_service. You need use it as a library and import it into your project. Also, add the ollowing code in tab <application> of your manifest.xml.</span></div>
+<br/>
 
 ```xml
 <meta-data 
-     android：name="com.google.android.gms.version"
-     class="kix-line-break"
-     android：value="@integer/google_play_services_version" />
+    android:name="com.google.android.gms.version"
+    class="kix-line-break"
+    android:value="@integer/google_play_services_version" />
 ```
 
-**Step 2. Add permission**
-
-- Add the following permissions in manifest.xml of your project:
-
-
-```xml
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--The Googleplay app can be unloaded-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-```
-- Optional permission
-
-```xml
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-    <!-- If no add READ_PHONE_STATE permission will affect the advertising revenue -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-```
-
-
-**Step 3. Registered components**
+Registered components
 
 Add following in manifest.xml of your project:
 
@@ -192,292 +187,354 @@ Add following in manifest.xml of your project:
             <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
         </intent-filter>
     </receiver>
-    
-    <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" ></activity> 
+        
+    <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" />
+```
+
+Add permissions 
+
+- Add the following permissions in manifest.xml of your project:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<!--The Googleplay app can be unloaded-->
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+```
+
+- Optional permission
+
+
+```xml
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+
+<!-- If no add READ_PHONE_STATE permission will affect the advertising revenue -->
+<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 ```
 
 ## 3. Integration
 
-- ### Banner
-**Creat a ViewGroup as banner container, and add it in Activity. Then call the code below:**
+### 3.1 Banner
 
+#### 3.1.1 Initialization and request
 ```java
-//create YumiBanner object. Activity is the activity which you need to display banner ad. You need to create a SlotID on YUMIMOBI. Auto indicates if the mode is automatic. 
-//auto==true  Banner ads automatic rotation
-//auto==false  Banner ads manual rotation，call banner.requestYumiBanner() repeatedly to rotate
-// If you are using YUMI mediation alone, please enable YUMI ad rotation, set the field as “true”; if you are using YUMI ads in other mediations, to ensure ad performance, please disable YUMI ad rotation, set the field as “false”.
+// Creates a YumiBanner object
+//
+// activity: your banner view will add to the activity.
+// YOUR_SLOT_ID: ad unit id or placement id, created with the YumiMediation platform
+// auto: Whether to automatically load the next ad
+//  - true: Automatically request and display the next banner after the banner has failed to load or show for a certain amount of time
+//  - false: Do not automatically load the next ad, you need to call the requestYumiBanner() method again to display the next one.
 YumiBanner banner = new YumiBanner(activity， "YOUR_SLOT_ID"， auto);
-//Set ViewGroup as banner container, set it along with size
-// bannerContainer  Your ad container
-// AdSize.BANNER_SIZE_AUTO  SDK automatically sets screen size as 320*50 or 728*90
-// isMatchWindowWidth Set to false
-banner.setBannerContainer(bannerContainer， AdSize.BANNER_SIZE_AUTO， isMatchWindowWidth);
-//Set channel according to your settings on the platform, you only need to set it once. Repeated calls are based on the last time you call.
-banner.setChannelID(channelStr);
-// Set version name according to your settings on the platform, you only need to set it once. Repeated calls are based on the last time you call.
-banner.setVersionName(versionStr);
-//Start requesting ads, auto==true  The method needs to be called only once
+
+// Must pass the base information by the setBannerContainer method to the SDK, otherwise there will be no ad to load.
+// 
+// bannerContainer: ad coantiner(ViewGroup), Ad content will be filled in this container. The SDK will adjust the size of the incoming container according to the screen size. For example, if the width of the incoming container exceeds the width of the screen, it will automatically reduce the width of the container and adjust the height of the container accordingly.
+// AdSize: Banner style. The SDK will adjust the container size according to the style, there are 4 styles, as followed
+//  - BANNER_SIZE_AUTO：The SDK resizes the container according to the screen size. If it detects that the device is a mobile phone, set the container size to 320 * 50; if the device is a tablet, set the container size to 728 * 90
+//  - BANNER_SIZE_SMART：Currently, only AdMob supports SMART Banner in the three-party network, and other networks directly return no ads. Please refer to AdMob SMART_BANNER for details.
+//  - BANNER_SIZE_320X50：The SDK sets the container to 320*50 size
+//  - BANNER_SIZE_728X90：The SDK sets the container to 728*90 size
+// isMatchWindowWidth: True means that the container is expanded to the same width as the screen (valid only in portrait), with a height to width ratio of 1:8 (BANNER_SIZE_728X90) or 1:6.4 (non-BANNER_SIZE_728X90)
+banner.setBannerContainer(bannerContainer, AdSize.BANNER_SIZE_AUTO, isMatchWindowWidth);
+
+// Request a banner ad, if the auto property is set to true, then you only need to call this method once.
 banner.requestYumiBanner();
 ```
 
-
-
-<span style="color:red;">
-Note: ChannelID refers to the channel labeling of the application, and the YUMI platform can carry out data statistics and effect analysis according to the ChannelID. A Popstar! For example, when the game is released to the SamSung channel, setChannelID(channelStr) needs to be set to setChannelID(' SamSung ').
-The channelID is labeled as the YUMI platform to generate the information and cannot be modified at will：
-</span>
-
-| **Channel name** | **ChannelID** |
-| ---------------- | ------------- |
-| SamSung          | SamSung       |
-
-**Implement in Activity lifecycle:**
+#### 3.1.2 Destroy
 
 ```java
-@Override
-protected void onDestroy() {
-    if (banner != null) {
-        banner.onDestory();
-    }
-	super.onDestroy();
-}
+banner.destroy();
 ```
 
+Deleting the banner object when it is no longer necessary to display , the banner is recommended to be destroyed in the Activity `onDestroy()` life callback. If you just want to temporarily hide the Banner ad, you can call the `dismissBanner()` method and call the `resumeBanner()` method to redisplay the ad when it needs to be displayed again.
 
+#### 3.1.3 Add Listener
 
-- ### Interstitial
-**Add the following code in onCreate method of Activity:**
+If you need to listen for banner ad method callbacks, after creating the YumiBanner object, call the following method
 
 ```java
-//Create YumiInterstitial object. Activity is the one you use to show interstitials, You need to create a SlotID on YUMIMOBI. Auto indicates if the mode is automatic.
-//auto==true  Automatically request the next ad, auto mode recommended to ensure ad performance
-//auto==false  Auto request disabled, to request please repeatedly call interstitial.requestYumiInterstitial()
-// If you are using YUMI Ads, please enable YUMI ad rotation, set the field as “true”.
+banner.setBannerEventListener(iYumiBannerListener);
+```
+
+The IYumiBannerListener interface is defined as follows
+
+```java
+interface IYumiBannerListener {
+    // This method is fired when the ad is loaded
+    void onBannerPrepared();
+    // This method is fired when the ad fails to load, print adError to view the error details
+    void onBannerPreparedFailed(AdError adError);
+    // This method is fired when the ad is displayed on the screen
+    void onBannerExposure();
+    // This method is fired when an ad is clicked
+    void onBannerClicked();
+    // This method is fired when the ad is closed, and calling the dismissBanner() method does not trigger this method.
+    void onBannerClosed();
+};
+```
+
+#### 3.1.4 Other methods
+```java
+// hide banner
+banner.dismissBanner();
+// Restore display banner
+banner.resumeBanner();
+```
+
+### 3.2 Interstitial
+
+#### 3.2.1 Initialization and request
+
+```java
+// Create a YumiInterstitial object.
+// 
+// activity: Interstitial will appear in this activity
+// YOUR_SLOT_ID: ad unit id or placement id, created with the YumiMediation platform
+// auto: Whether to automatically load the next ad
+//  - true: When the displaying ad ends or the ad fails to load, the SDK will automatically request the next ad at the appropriate time.
+//  - false: When the ad has been displayed, the ad will not be automatically requested.
 YumiInterstitial interstitial = new YumiInterstitial(activity， "YOUR_SLOT_ID"， auto);
-// Set channel according to your settings on the platform, you only need to set it once. Repeated calls are based on the last time you call.
-interstitial.setChannelID(channelStr);
-// Set version name according to your settings on the platform, you only need to set it once. Repeated calls are based on the last time you call.
-interstitial.setVersionName(versionStr);
-//Start requesting ads, auto==true  The method needs to be called only once
+
+// Request an ad, if the auto property is set to true, then you only need to call this method once.
 interstitial.requestYumiInterstitial();
 ```
-<span style="color:red;">
-Note: ChannelID refers to the channel labeling of the application, and the YUMI platform can carry out data statistics and effect analysis according to the ChannelID. A Popstar! For example, when the game is released to the SamSung channel, setChannelID(channelStr) needs to be set to setChannelID(' SamSung ').
-The channelID is labeled as the YUMI platform to generate the information and cannot be modified at will：
+
+<div style="background-color:rgb(228,244,253);padding:10px;">
+<span style="color:rgb(62,113,167);">
+<b>Important:</b> When showing the ad, you must use the interstitial.onBackPressed() method to avoid the back key logic confusion. For example, when there is an ad being displayed, clicking the back button should close the ad instead of closing the current activity. Sample code is as follows
 </span>
-
-| **Channel name** | **ChannelID** |
-| ------------------------ | ------------- |
-| SamSung                  | SamSung       |
-
-**Call the following code when you need to show interstitial ads:**
-
-```java
-//Show immediately, if there is a pre-cached interstitial, immediately show the pop-up interstitial (Speed to pop up varies on different devices, there might be visual lag), if there isn’t a pre-cached interstitial, show no ads and drop the impression opportunity until the next call.
-if (interstitial != null) {
-	interstitial.showInterstitial(false);
-}
-//Delayed display  If when you intend to show interstitial, it’s still pre-caching, then delayed display allows SDK to wait for the pre-cach to complete, after completion it will show interstitial. Time waited is indefinite.
-if (interstitial != null) {
-	interstitial.showInterstitial(true);
-}
-//Cancel delayed display   If you need to do other operations when delayed display hasn’t started, you need to call the following method to cancel this delayed display. After cancellation, interstitial won’t be shown until the next call.
-if (interstitial != null) {
-	interstitial.cancelInterstitialDelayShown();
-}
-```
-
-**Implement in Activity lifecycle:**
-
-```java
-@Override
-protected void onDestroy() {
-    if (interstitial != null) {
-    	interstitial .onDestory();
-    }
-    super.onDestroy();
-}
-```
-
-As different platforms have different pop-up displays, you need to add the following code in onBackPressed()of Activity: 
+</div>
+<br/>
 
 ```java
 @Override
 public void onBackPressed() {
-	if (interstitial.onBackPressed()) {
-		return;
-	}
-	super.onBackPressed();
+    if (interstitial.onBackPressed()) {
+        return;
+    }
+    super.onBackPressed();
 }
 ```
 
-<p><span style="color:red;">Note: In order not to confuse the logic of back key, please make sure to add this method when using interstitial</span></p>
-
-
-
-- ### Rewarded Video
-
-**Add following code in onCreate method of Activity:**
+#### 3.2.2 Display and Destroy
 
 ```java
-// Create YumiInterstitial object. Activity is the one you use to show interstitials, SlotID is the app ID which is assigned to you by the platform.
+// Display ad
+//
+// delayToShowEnable: Whether to delay the display of the ad
+//  - false: Indicates immediate display, if there is an ad available, it will be displayed immediately, if not, it will not be displayed.
+//  - true: Indicates delayed display. If this method is called, it will be displayed immediately if there is any available ad; if there is no available advertisement, it will automatically pop up the ad when the available advertisement is available (waiting time is uncontrollable), which can be canceled by cancelInterstitialDelayShown() 
+interstitial.showInterstitial(delayToShowEnable);
+```
+
+```java
+// Destroy the ad instance
+interstitial.destroy();
+```
+Calling the `destroy()` method only when you don't need to display the ad, it is recommended to call this method in the Activity `onDestroy()` life callback.
+
+#### 3.2.3 Add Listener
+
+If you need to listen to the ad method callback, after creating the YumiInterstitial object, call the following method
+
+```java
+interstitial.setInterstitialEventListener(iYumiInterstitialListener);
+```
+
+the IYumiInterstitialListener interface is defined as follows
+```java
+interface IYumiInterstitialListener {
+    // This method is fired when the ad is loaded.
+    void onInterstitialPrepared();
+    // This method is fired when the ad fails to load, print adError to view the error details
+    void onInterstitialPreparedFailed(AdError adError);
+    // This method is fired when an ad appears on the screen
+    void onInterstitialExposure();
+    // This method is fired when an ad is clicked
+    void onInterstitialClicked();
+    // This method is fired when closing the ad
+    void onInterstitialClosed();
+    // This method is fired when the showInterstitial() method is called and failed to show an ad, print adError to view the error details
+    void onInterstitialExposureFailed(AdError adError);
+    // This method is fired when the video starts playing when the video is inserted in the ad. If there is no video in the screen, the method is fired after the advertisement is displayed.
+    void onInterstitialStartPlaying();
+}
+```
+
+#### 3.2.4 Other methods
+```java
+// Determine if an ad is available
+interstitial.isReady();
+// Cancel an ad in a delayed task
+interstitial.cancelInterstitialDelayShown();
+```
+
+### 3.3 Rewarded Video
+
+#### 3.3.1 Initialization and request
+
+```java
+// Create a YumiMedia object.
+//
+// activity: Rewarded Video will displayed from the Activity
+// YOUR_SLOT_ID: ad unit id or placement id, created with the YumiMediation platform
 YumiMedia media = new YumiMedia(activity， "YOUR_SLOT_ID");
-// Set channel according to your settings on the platform, you only need to set it once. Repeated calls are based on the last time you call.
-media.setChannelID(channelStr);
-// Set version name according to your settings on the platform, you only need to set it once. Repeated calls are based on the last time you call.
-media.setVersionName(versionStr);
-//Start requesting ads.
+
+// Request a Rewarded Video, after the first call to this method, the ad will automatically request the next ad after the closure or request failure
 media.requestYumiMedia();
 ```
-<span style="color:red;">
-Note: ChannelID refers to the channel labeling of the application, and the YUMI platform can carry out data statistics and effect analysis according to the ChannelID. A Popstar! For example, when the game is released to the SamSung channel, setChannelID(channelStr) needs to be set to setChannelID(' SamSung ').
-The channelID is labeled as the YUMI platform to generate the information and cannot be modified at will：
+
+#### 3.3.2 Display and Destroy
+
+show Rewarded Video
+```java
+media.showMedia();
+```
+
+Destroy reward video object: Call the `destroy()` method only when you don't need to show reward video ads. It is recommended to call this method in the Activity `onDestroy()` life callback.
+
+```java
+media.destroy()
+```
+
+#### 3.3.3 Add Listener
+
+If you need to listen to the Rewarded Video method callback, after creating the YumiMedia object, call the following method
+
+```java
+media.setMediaEventListener(iYumiMediaListener);
+```
+
+the IYumiMediaListener interface is defined as follows:
+
+```java
+interface IYumiMediaListener {
+    // This method is fired when Rewarded Video is loaded.
+    void onMediaPrepared();
+    // This method is fired when the Rewarded Video fails to load. Print adError to view the error details.
+    void onMediaPreparedFailed(AdError adError);
+    // This method is fired when Rewarded Video is displayed to the screen.
+    void onMediaExposure();
+    // This method is fired when Rewarded Video does not successfully display the ad after calling the display method. Print adError to view the error details.
+    void onMediaExposureFailed(AdError adError);
+    // This method is fired when an ad is clicked
+    void onMediaClicked();
+    // This method is fired when Rewarded Video is closed. isRewarded indicates whether the reward should be issued. For example, if you choose to skip the advertisement during playback, this close event will also be fired. At this time, isRewarded is false, indicating that the reward should not be issued.
+    void onMediaClosed(boolean isRewarded);
+    // Rewarded Video rewarded callback, you should issue a reward at this time (this method as same as onMediaClosed (true) , to avoid repeating the award)
+    void onMediaRewarded();
+    // This method is fired when the video starts playing
+    void onMediaStartPlaying();
+}
+```
+
+#### 3.3.4 Other methods
+```java
+// Determine if there is a ready advertisement
+media.isReady();
+// Returns the remaining number of reward ads. If it is 0, it means that Rewarded Video will not be requested again today.
+media.getMediaRemainRewards()
+```
+
+<div style="background-color:rgb(228,244,253);padding:10px;">
+<span style="color:rgb(62,113,167);">
+<b>Note:</b> Do not call the isReady() method frequently, it is recommended to call the interval for no less than 5 seconds.
 </span>
+</div>
 
-| **Channel name** | **ChannelID** |
-| ------------ | ------------- |
-| SamSung      | SamSung       |
+### 3.4 Splash
 
-**To check if video is available, call the following code:**
+#### 3.4.1 Initialization and request
 
 ```java
-if (media != null) {
-	media.isMediaPrepared ();
+// Create a YumiSplash object
+// 
+// activity: The splash ad will appear in the adContainer container of this activity
+// adContainer: Splash ad container (ViewGroup, it is recommended to use FrameLayout as the ad container), the ad will be displayed in this container
+// YOUR_SLOT_ID: ad unit id or placement id, created with the YumiMediation platform
+YumiSplash splash = new YumiSplash(activity, adContainer, "YOUR_SLOT_ID");
+
+// Request and display an splash ad
+splash.loadAdAndShowInWindow();
+```
+
+#### 3.4.2 Add Listener
+
+To monitor the splash ad method callback, after creating the YumiSplash object, call the following method
+
+```java
+splash.setSplashListener(iYumiSplashListener);
+```
+
+The IYumiSplashListener interface is defined as follows
+
+```java
+interface IYumiSplashListener {
+    // This method is fired when the ad is successful
+    void onSplashAdSuccessToShow();
+    // This method is fired when the ad fails to display successfully, print adError to view the error details
+    void onSplashAdFailToShow(AdError adError);
+    // This method is fired when clicking to open the screen
+    void onSplashAdClicked();
+    // This method is fired when the ad is closed
+    void onSplashAdClosed();
 }
 ```
 
-<p><span style="color:red;">Note: It is recommended not to request frequently, the request interval is more than 5 seconds.</span></p>
-
-**When you need to show rewarded video, call the following code:**
-
+#### 3.4.3 Other methods
 ```java
-if (media != null) {
-	media.showMedia();
-}
+// Set the launch image to display this image during the loading of the splash ad
+splash.setLaunchImage(drawable);
+// Set the length of the request ad. The default is 3 seconds. If it is not loaded within 3 seconds, it will fired the failure callback directly. Here, 3 seconds is the approximate number.
+splash.setFetchTime(seconds);
 ```
 
-<p><span style="color:red;">Note:</span></p>
-<p><span style="color:red;">1.Rewarded video is available after the above integration， but reward callbacks are still unavailable. To get rewards callbacks, please add listener to get rewards callback according to status listener section in Advanced Features.</span></p>
-<p><span style="color:red;">2.A new request for the next ad will be sent after the previous one has been closed or previous request has failed.</span></p>
-<p><span style="color:red;">3.Method media.requestYumiMedia() needs to be called only once at the beginning.</span></p>
+### 3.5 Native
 
-**Implement in Activity lifecycle:**
-
+#### 3.5.1 Initialization and request
 ```java
-@Override
-protected void onDestroy() {
-    if (media != null) {
-    	media.onDestory();
-    }
-    super.onDestroy();
-}
-```
-
- 
-
-- ### Splash
-
-**Add the following code in method onCreate of Activity:**
-
-```java
-//Create splash object. 
-//activity used to show splash
-//SlotID AppID assigned by the platform
-// container:ad container
-// width/height:width and height of ad container
-// SplashADListener:ad callback listener
-SplashAD splashAD = new SplashAD(activity， SlotID， container， adwidth， adheight， SplashADListener); 
-```
-
-**Implement in Activity lifecycle:**
-
- ```
-@Override
-protected void onDestroy() {
-    if (splashAD != null) {
-    	splashAD.onDestory();
-    }
-    super.onDestroy();
-}
- ```
-
-
-
-- ### Native 
-
-**Add the following code in method onCreate of Activity:**
-
-```java
-// Create a YumiNativeAdOptions to make additional customizations using the NativeAdOptions object
+// Create a native ad option for custom style. The following is the default style. Details are discussed in latter.
 YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder().build();
-// Create a native ad, yid is Yumi ID for Yumi background,nativeAdOptions is make additional customizations
-YumiNative nativeAd = new YumiNative(this, yid);
-// set Channel ID 
-nativeAd.setChannelID(channelStr);
-//set version
-nativeAd.setVersionName(versionStr);
-// set callback interface of native ad.
-nativeAd.setNativeEventListener(new IYumiNativeListener()
-{
-@Override
-public void onLayerPrepared(int adCount) 
-{
-        // callback of request success, adCount refers to returned ad quantity
-}
-@Override
-public void onLayerFailed(LayerErrorCode error)
-{
-        // callback of request error, the error is notification of request failure
-}
-@Override
-public void onLayerClick() {
-    // callback of  AD Click
-}
-});
-// request ad, adCount is request ad number,the result of success or error will be returned in callback interface
-int adCount = 1;
+
+// Create a YumiNative object
+//
+// activity: 
+// YOUR_SLOT_ID: ad unit id or placement id, created with the YumiMediation platform
+// nativeAdOptions: style config object
+YumiNative nativeAd = new YumiNative(activity, "YOUR_SLOT_ID", nativeAdOptions);
+
+// load ad
+// 
+// adCount: The number of native ads loaded this time
 nativeAd.requestYumiNative(adCount); 
 ```
-<span style="color:red;">
-Note: ChannelID refers to the channel labeling of the application, and the YUMI platform can carry out data statistics and effect analysis according to the ChannelID. A Popstar! For example, when the game is released to the SamSung channel, setChannelID(channelStr) needs to be set to setChannelID(' SamSung ').
-The channelID is labeled as the YUMI platform to generate the information and cannot be modified at will：
-</span>
 
-| **Channel name** | **ChannelID** |
-| ------------ | ------------- |
-| SamSung      | SamSung       |
-
-**YumiNativeAdOptions ：**
-
-Native ads allow you to make additional customizations using the YumiNativeAdOptions object. This guide shows you how to use YumiNativeAdOptions.
-
-Setting options:
+#### 3.5.2 Add litener
+To listen to the native ad callback method, after creating the YumiNative object, call the following method
 ```java
-YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder()
-                .setIsDownloadImage(true)// set whether the SDK download image resources
-                .setAdChoicesPosition(YumiNativeAdOptions.POSITION_TOP_RIGHT)// set AdChoices view position
-                .setAdAttributionPosition(YumiNativeAdOptions.POSITION_TOP_LEFT)// set AdAttribution view position
-                .setAdAttributionText("Ad")// set AdAttribution view text
-                .setAdAttributionTextColor(Color.argb(255, 255, 255, 255))// set AdAttribution view text color
-                .setAdAttributionBackgroundColor(Color.argb(90, 0, 0, 0))// set AdAttribution view background color
-                .setAdAttributionTextSize(10)// set AdAttribution view text size
-                .setHideAdAttribution(false)// set whether to hide AdAttribution
-                .build();
+nativeAd.setNativeEventListener(iYumiNativeListener);
 ```
-* **setIsDownloadImage** Image assets for native ads are returned via instances of NativeContent.Image, which holds a Drawable and a Url. If this option is set to true, the SDK fetches image assets automatically and populates both the Drawable and the Uri for you. If it's set to false, however, the SDK instead populates just the Url field, allowing you to download the actual images at your discretion.Default is true.
-* **setAdChoicesPosition** use this property to specify where the AdChoicesView should be placed. Default is YumiNativeAdOptions.POSITION_TOP_RIGHT.
-* **setAdAttributionPosition** use this property to specify where the Ad text view should be placed. Default is YumiNativeAdOptions.POSITION_TOP_LEFT.
-* **setAdAttributionText** use this property to specify the Ad text. Default is “Ad”.
-* **setAdAttributionTextColor** use this property to specify the Ad text color. Default is white.
-* **setAdAttributionBackgroundColor** use this property to specify the Ad text background color。Default is gray.
-* **setAdAttributionTextSize** use this property to specify the Ad text font size. Default is 10.
-* **setHideAdAttribution** use this property to hide the Ad text. Default is display.
 
-Default options：
+The IYumiNativeListener interface is defined as follows
 ```java
-YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder().build();
+interface IYumiNativeListener {
+    // This method is fired when the native ad is loaded
+    void onLayerPrepared(List<NativeContent> adList);
+    // This method is fired when the native ad fails to load, print adError to view the error details
+    void onLayerFailed(AdError adError);
+    // This method is fired when a native ad is clicked
+    void onLayerClick();
+}
 ```
-**Native Ads Show：**
+
+#### 3.5.3 Display ad
 
 * YumiNativeAdView class：
 
@@ -485,7 +542,7 @@ For the YumiNativeAdView format, there is the corresponding YumiNativeAdView cla
 
 1、The view hierarchy for a unified native ad that uses a LinearLayout to display its asset views might look like this：
 
-```java
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <com.yumi.android.sdk.ads.formats.YumiNativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -497,7 +554,6 @@ For the YumiNativeAdView format, there is the corresponding YumiNativeAdView cla
     android:background="#FFFFFF"
     android:minHeight="50dp"
     android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -505,7 +561,6 @@ For the YumiNativeAdView format, there is the corresponding YumiNativeAdView cla
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="12dp">
-
         <LinearLayout
             android:orientation="horizontal"
             ...>
@@ -533,54 +588,52 @@ For the YumiNativeAdView format, there is the corresponding YumiNativeAdView cla
 
 ```java
 private void showNativeAd() {
-        if (adContentList != null && adContentList.size() > 0) // determine if the ad returned by the native callback onLayerPrepared() interface is empty
-        {
-            NativeContent content = adContentList.get(0);// git one native ad
-
-            if(content.isExpired()){
-                // determine this Native Ad is expired，true :  expired；false ：not expired.
-                // if expired，please not show this Native Ad, request new Native Ad
-                return;
-            }
-
-            // creater native ad Continer view，use to show Native ad
-            FrameLayout nativeAdContinerView = (FrameLayout) findViewById(R.id.ll_ad_continer);
-            
-            // // Assumes that your ad layout is in a file call activity_native_material.xml
-            // in the res/layout folder
-            YumiNativeAdView adView = (YumiNativeAdView) getLayoutInflater()
-                    .inflate(R.layout.activity_native_material, null);
-
-            // Locate the view that will hold the title, set its text, and call the YumiNativeAdView's setTitleViewmethod to register it.
-            adView.setTitleView((TextView) adView.findViewById(R.id.headline));
-
-            ...
-            // Repeat the above process for the other assets in the YumiNativeAdView using additional view objects (Buttons, ImageViews, etc).
-            ...
-
-            // If you want to display a video ad, please register the container（FrameLayout）that displays the video  
-           adView.setMediaLayout((FrameLayout) adView.findViewById(R.id.media_content));
-
-           
-            // fill the title view using the string asset provided by NativeContent
-            if (content.getTitle() != null) {
-                ((TextView) adView.getHeadlineView()).setText(content.getTitle());
-            }
-           
-            ...
-            // Please follow the above method to fill the content of Icon, Large Picture, Call to Action, etc.
-            ...
-
-            // Call the YumiNativeAdView's setNativeAd method to register the NativeContent.
-
-            adView.setNativeAd(content);
-
-            // clean nativeAdContinerView
-            nativeAdContinerView.removeAllViews();
-            // add adView to nativeAdContinerView
-            nativeAdContinerView.addView(adView);
+    // determine if the ad returned by the native callback onLayerPrepared() interface is empty
+    if (adContentList != null && adContentList.size() > 0) {
+        NativeContent content = adContentList.get(0);// git one native ad
+        // determine this Native Ad is expired，true :  expired；false ：not expired.
+        // if expired，please not show this Native Ad, request new Native Ad
+        if(content.isExpired()){
+            return;
         }
+
+        // creater native ad Continer view，use to show Native ad
+        FrameLayout nativeAdContinerView = (FrameLayout) findViewById(R.id.ll_ad_continer);
+
+        // // Assumes that your ad layout is in a file call activity_native_material.xml
+        // in the res/layout folder
+        YumiNativeAdView adView = (YumiNativeAdView) getLayoutInflater().inflate(R.layout.activity_native_material, null);
+
+        // Locate the view that will hold the title, set its text, and call the YumiNativeAdView's setTitleViewmethod to register it.
+        adView.setTitleView((TextView) adView.findViewById(R.id.headline));
+
+        ...
+        // Repeat the above process for the other assets in the YumiNativeAdView using additional view objects (Buttons, ImageViews, etc).
+        ...
+
+        // If you want to display a video ad, please register the container（FrameLayout）that displays the video  
+        adView.setMediaLayout((FrameLayout) adView.findViewById(R.id.media_content));
+
+
+        // fill the title view using the string asset provided by NativeContent
+        if (content.getTitle() != null) {
+            ((TextView) adView.getHeadlineView()).setText(content.getTitle());
+        }
+
+        ...
+        // Please follow the above method to fill the content of Icon, Large Picture, Call to Action, etc.
+        ...
+
+        // Call the YumiNativeAdView's setNativeAd method to register the NativeContent.
+
+        adView.setNativeAd(content);
+
+        // clean nativeAdContinerView
+        nativeAdContinerView.removeAllViews();
+        // add adView to nativeAdContinerView
+        nativeAdContinerView.addView(adView);
     }
+}
 ```
 3、Let's take a look at the individual tasks：
 
@@ -597,8 +650,7 @@ content.isExpired()
 
 ```java
 // Inflate XML layout，Its outermost node is YumiNativeAdView
-YumiNativeAdView adView = (YumiNativeAdView) getLayoutInflater()
-            .inflate(R.layout.activity_native_material, null);
+YumiNativeAdView adView = (YumiNativeAdView) getLayoutInflater().inflate(R.layout.activity_native_material, null);
 ```
 
 In this example, we're inflating an XML layout that contains views for displaying a unified native ad and then locating a reference to the YumiNativeAdView. 。
@@ -612,9 +664,10 @@ This sample code locates the view used to display the headline, sets its text us
 TextView title = (TextView) adView.findViewById(R.id.headline)
 // Locate the view that will hold the title, set its text, and call the YumiNativeAdView's setTitleViewmethod to register it.
 adView.setTitleView(title);
-if (content.getTitle() != null) {
+
 // fill the title view using the string asset provided by NativeContent
-   ((TextView) adView.getHeadlineView()).setText(content.getTitle());
+if (content.getTitle() != null) {
+    ((TextView) adView.getHeadlineView()).setText(content.getTitle());
 }
 ```
 This process of locating the view, setting its value, and registering it with the ad view class should be repeated for each of the assets provided by the native ad object that the app will display.
@@ -632,6 +685,7 @@ adView.setNativeAd(content);
  1、If you want to show a video in a native ad, just add the layout of the video container (FrameLayout) in the view when you register the view and pass the container to the SDK.
  
  MediaContent（FrameLayout） can be defined in an XML layout or constructed dynamically. It should be placed within the view hierarchy of a YumiNativeAdView. Apps using a MediaContent don't need to populate it with an asset, but must register it with the YumiNativeAdView like this：
+
 ```java
  FrameLayout mediacontent = (FrameLayout) adView.findViewById(R.id.media_content);
  adView.setMediaLayout(mediacontent);
@@ -661,236 +715,55 @@ YumiNativeAdVideoController offers these methods for querying video state：
 2、Apps can also use the YumiNativeAdVideoController.YumiVideoLifecycleCallbacks class to get notifications when events occur in the lifecycle of a video asset：
 
 ```java
-nativeAdVideoController.setVideoLifecycleCallbacks(new YumiNativeAdVideoController.YumiVideoLifecycleCallbacks() {
-                @Override
-                public void onVideoEnd() {
-                    super.onVideoEnd();
-                }
-            });
+nativeAdVideoController.setVideoLifecycleCallbacks(
+    new YumiNativeAdVideoController.YumiVideoLifecycleCallbacks() {
+        @Override
+        public void onVideoEnd() {
+            super.onVideoEnd();
+        }
+    });
 ```
 
  **Implement in Activity lifecycle:**
 
 ```java
 @Override
-protected void onDestroy()
-{
-	super.onDestroy();
-	if (nativeAd != null)
-	{
-		nativeAd.onDestroy();
-	}
+protected void onDestroy(){
+    super.onDestroy();
+    if (nativeAd != null) {
+        nativeAd.onDestroy();
+    }
 }
 ```
 
+#### 3.5.4 Other settings
 
-## 4. Advanced Features 
-
-- ### Banner
-
-**Set ad status listener**
-
-If you need to listen to the lifecycle of banner ads, please call the following method after you create YumiBanner object:
+You can use YumiNativeAdOptions object change the ads styles, as follows:
 
 ```java
-// Set ad status listener.
-banner.setBannerEventListener(bannerListener);
+YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder()
+                    .setIsDownloadImage(true)
+                    .setAdChoicesPosition(YumiNativeAdOptions.POSITION_TOP_RIGHT)
+                    .setAdAttributionPosition(YumiNativeAdOptions.POSITION_TOP_LEFT)
+                    .setAdAttributionText("Ad")
+                    .setAdAttributionTextColor(Color.argb(255, 255, 255, 255))
+                    .setAdAttributionBackgroundColor(Color.argb(90, 0, 0, 0))
+                    .setAdAttributionTextSize(10)
+                    .setHideAdAttribution(false)
+                    .build();
 ```
+* **setIsDownloadImage** Image assets for native ads are returned via instances of NativeContent.Image, which holds a Drawable and a Url. If this option is set to true, the SDK fetches image assets automatically and populates both the Drawable and the Uri for you. If it's set to false, however, the SDK instead populates just the Url field, allowing you to download the actual images at your discretion.Default is true.
+* **setAdChoicesPosition** use this property to specify where the AdChoicesView should be placed. Default is YumiNativeAdOptions.POSITION_TOP_RIGHT.
+* **setAdAttributionPosition** use this property to specify where the Ad text view should be placed. Default is YumiNativeAdOptions.POSITION_TOP_LEFT.
+* **setAdAttributionText** use this property to specify the Ad text. Default is “Ad”.
+* **setAdAttributionTextColor** use this property to specify the Ad text color. Default is white.
+* **setAdAttributionBackgroundColor** use this property to specify the Ad text background color。Default is gray.
+* **setAdAttributionTextSize** use this property to specify the Ad text font size. Default is 10.
+* **setHideAdAttribution** use this property to hide the Ad text. Default is display.
 
-Regarding ad listener, you can instantiate an IYumiBannerListener, and add your own logic according to the callback. The callbacks are shown below: 
-
-| method                                           | explain                                                                      |
-| ------------------------------------------------ | ---------------------------------------------------------------------------- |
-| onBannerPreparedFailed(LayerErrorCode errorCode) | Callback when caching fails. Reasons can be found through errorCode.getMsg() |
-| onBannerPrepared()                               | Callback when caching succeeds.                                              |
-| onBannerExposure()                               | Callback when impression succeeds.                                           |
-| onBannerClosed()                                 | Callback when Banner is closed.                                              |
-| onBannerClicked()                                | Callback when Banner is clicked.                                             |
-
-**Sample**
-
-```java
-// Created banner ad status listener.
-bannerListener = new IYumiBannerListener() {
-    @Override
-    public void onBannerPreparedFailed(LayerErrorCode errorCode) {
-        // Callback when caching fails. Reasons can be found through errorCode.getMsg()
-    }
-    @Override
-    public void onBannerPrepared() {
-        //Callback when caching succeeds.
-    }
-    @Override
-    public void onBannerExposure() {
-        //Callback when impression succeeds.
-    }
-    @Override
-    public void onBannerClosed() {
-        //Callback when Banner is closed.
-    }
-    @Override
-    public void onBannerClicked() {
-        //Callback when Banner is clicked.
-    }
-};
-```
-
-
-
- **Show and hide banner**
-
-```java
-//Hide banner, pause rotation at the same time.
-banner.dismissBanner();
-//Resume to show banner, resume rotation at the same time.
-banner.resumeBanner();
-```
-
-
-
-- ### Interstitial 
-
-**Set ad status listener**
-
-If you need to listen to the lifecycle of interstitial ads, please call the following method after you create YumiBanner object:
-
-```java
-// Set ad status listener.
-interstitial.setInterstitialEventListener(interstitialListener);
-```
-
-Regarding ad listener, you can instantiate an IYumiInterstitialListener, and add your own logic according to the callback. The callbacks are shown below: 
-
-| method                                             | explain                                                                                             |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| onInterstitialPreparedFailed(LayerErrorCode error) | Callback when caching fails. Reason can be found through errorCode.getMsg()                         |
-| onInterstitialPrepared()                           | Callback when loading succeeds. Note: please do not call show interstitial method in this callback. |
-| onInterstitialExposure()                           | Callback when impression succeeds.                                                                  |
-| onInterstitialExposureFailed()                     | Callback when impression fails.                                                                     |
-| onInterstitialClosed()                             | Callback when interstitial is closed.                                                               |
-| onInterstitialClicked()                            | Callback when interstitial is clicked.                                                              |
-
-**Sample**
-
-```java
-// Set ad status listener.
-interstitialListener = new IYumiInterstititalListener() {
-    @Override
-    public void onInterstitialPreparedFailed(LayerErrorCode error) {
-        // Callback when loading fails. Reason can be found through errorCode.getMsg()
-    }
-    @Override
-    public void onInterstitialPrepared() {
-        // Callback when loading succeeds.
-    }
-    @Override
-    public void onInterstitialExposure() {
-        // Callback when impression succeeds.
-    }
-    @Override
-    public void onInterstitialExposureFailed () {
-        // Callback when impression failed.			
-    }
-    @Override
-    public void onInterstitialClosed() {
-        // Callback when interstitial is closed.
-    }
-    @Override
-    public void onInterstitialClicked() {
-        //Callback when interstitial is clicked.
-    }
-};
-```
-
- 
-
-- ### Rewarded Video
-
-**Set ad status listener**
-
-If you need to listen to the lifecycle of video ads, please call the following method after you create YumiBanner object:
-
-```java
-// Set ad status listener.
-media.setMediaEventListner(mediaListener);
-```
-
-Regarding ad listener, you can instantiate an IYumiMediaListener, and add your own logic according to the callback. The callbacks are shown below:
-
-| method              | explain                                                                                                                                                                                                                            |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| onMediaExposure()   | Callback when impression succeeds                                                                                                                                                                                                  |
-| onMediaClosed()     | Callback when rewarded video is closed                                                                                                                                                                                             |
-| onMediaClicked()    | Callback when rewarded video is clicked. Note: this does not guarantee 100% callback due to platform differences.                                                                                                                  |
-| onMediaIncentived() | Callback for rewards after rewarded video has been played completely. Note: if the video has not been played completely, this callback won’t be used. In addition, this method is always triggered before onInterstitialClosed(). |
-
-**Sample**
-
-```java
-// Set ad status listener.
-mediaListener = new IYumiMediaListener() {
-    @Override
-    public void onMediaIncentived() {
-        //Callback when reward is obtained
-    }
-    @Override
-    public void onMediaExposure() {
-        // Callback when impression succeeds.
-    }
-    @Override
-    public void onMediaClosed() {
-        //Callback when interstitial is closed.					
-    }
-    @Override
-    public void onMediaClicked() {
-        //Callback when interstitial is clicked.
-    }
-};
-```
-
-
-
-- ### Splash
-
-**Set ad status listener**
-
-Regarding ad listener, you can instantiate a SplashADListener, and add your own logic according to the callback. The callbacks are shown below:
-
-| method           | explain                         |
-| ---------------- | ------------------------------- |
-| onSplashShow()   | Callback when splash is shown   |
-| onSplashClose()  | Callback when splash is closed  |
-| onSplashClick()  | Callback when splash is clicked |
-| onSplashFailed() | Callback when loading fails     |
-
-**Sample**
-
-```java
-// Set ad status listener.
-splashListener = new SplashADListener () {
-    @Override
-    public void onSplashShow () {
-        //Callback when splash is shown	
-    }
-    @Override
-    public void onSplashFailed () {
-        //Callback when caching failed
-    }
-    @Override
-    public void onSplashClose () {
-        //Callback when splash is closed			
-    }
-    @Override
-    public void onSplashClick () {
-        //Callback when splash is clicked
-    }
-};
-```
-
-
-- ### Proguard
-
-If you are using Proguard add the following to your Proguard config file: 
+## 4. Other settings
+### 4.1 Proguard
+If your project turn on minifyEnabled, add the following to the proguard file.
 
 ```c
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,Synthetic,EnclosingMethod
@@ -899,6 +772,49 @@ If you are using Proguard add the following to your Proguard config file:
 -keep class com.yumi.android.sdk.ads.selfmedia.**{*;}
 -keep class com.playableads.**{*;}
 ```
+
+### 4.2 channelID and versionName
+Each ad type supports setting channelID and versionName, taking the YumiBanner object as an example.
+```java
+// Set channels according to platform configuration.
+banner.setChannelID(channelID);
+// According to the platform configuration setting version
+banner.setVersionName(versionName);
+```
+
+<div style="background-color:rgb(228,244,253);padding:10px;">
+<span style="color:rgb(62,113,167);">
+<b>Important:</b> ChannelID refers to the channel ID published by the app. After filling in, the YUMI platform can perform data statistics and effect analysis based on the channel ID. Take Popstar! as example, when the game is released to the Samsung channel, setChannelID(channelStr) needs to be set to setChannelID(‘SamSung’). The channel ID generates information for the YUMI platform and cannot be modified at will. This method can be ignored if there is no need to set channelID and versionName.
+</span>
+</div>
+
+### 4.3 GDPR
+This documentation is provided for compliance with the European Union's General Data Protection Regulation (GDPR). If you are collecting consent from your users, you can make use of APIs discussed below to inform YumiMobileSDK and some downstream consumers of this information. Get more information, please visit our official website.
+
+#### 4.3.1 Set GDPR
+
+GDPR state enumeration class definition
+
+```java
+enum YumiGDPRStatus {
+    // The user has granted consent for personalized ads.
+    PERSONALIZED,
+    // The user has granted consent for non-personalized ads.
+    NON_PERSONALIZED,
+    // The user has neither granted nor declined consent for personalized or non-personalized ads.
+    UNKNOWN
+}
+```
+
+GDPR related methods
+```java
+// Set the GDPR status
+YumiSettings.setGDPRConsent(YumiGDPRStatus.PERSONALIZED);
+
+// Get GDPR status
+ YumiSettings.getGDPRStatus();
+```
+
 
 ## 5. Precautions
 
