@@ -32,12 +32,16 @@
         android:label="YumiMobi300"
         android:theme="@style/AppTheme" >
 
+<!-- AdMob 17.1.+ must set or crash: start -->
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
+        <!-- end -->
+
         <activity
-            android:name="com.yumi.android.demo.MainActivity"
-            android:screenOrientation="portrait"
+            android:name="com.yumi.android.MainActivity"
             android:theme="@android:style/Theme.Light"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,42 +50,21 @@
         </activity>
         <activity
             android:name="com.yumi.android.demo.BannerActivity"
-            android:screenOrientation="sensor" >
-        </activity>
-        <activity
-            android:name="com.yumi.android.demo.BannerActivity_MT"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.yumi.android.demo.InterstitialActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.yumi.android.demo.InterstitialActivity_MT"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="landscape"
-             >
-        </activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.yumi.android.demo.MediaActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <activity
-            android:name="com.yumi.android.demo.MediaActivity_MT"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.yumi.android.demo.SplashTestActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:name="com.yumi.android.demo.SplashActivity"
+            android:screenOrientation="locked"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.yumi.android.demo.NativeActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
        
         <!-- yumi -->
        <receiver android:name="com.yumi.android.sdk.ads.self.module.receiver.ADReceiver">
@@ -129,9 +112,7 @@
        <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity" ></activity> 
 	   
         <!-- yumi -->
-      <!--   <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />       -->
+
         
 </application>
 

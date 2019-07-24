@@ -27,7 +27,6 @@
 
         <activity
             android:name="com.yumi.android.MainActivity"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -38,23 +37,21 @@
         </activity>
         <activity
             android:name="com.yumi.android.demo.BannerActivity"
-            android:screenOrientation="sensor"></activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.yumi.android.demo.InterstitialActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.yumi.android.demo.MediaActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <activity
-            android:name="com.yumi.android.demo.SplashTestActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:name="com.yumi.android.demo.SplashActivity"
+            android:screenOrientation="locked"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.yumi.android.demo.NativeActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>
