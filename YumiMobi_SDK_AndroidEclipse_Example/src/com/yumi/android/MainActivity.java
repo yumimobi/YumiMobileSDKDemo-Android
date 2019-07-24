@@ -74,8 +74,8 @@ public class MainActivity extends MActivity implements OnClickListener, OnChecke
         bannerSlotID.setText(getStringConfig("banner_slotID", "uz852t89"));
         interstitialSlotID.setText(getStringConfig("interstitial_slotID", "56ubk22h"));
         mdiaSlotID.setText(getStringConfig("mdia_slotID", "ew9hyvl4"));
-        splashSlotID.setText(getStringConfig("splash_slotID", "dt62rndy"));
-        nativeSlotID.setText(getStringConfig("native_slotID", "vv7snvc5"));
+        splashSlotID.setText(getStringConfig("splash_slotID", "vv7snvc5"));
+        nativeSlotID.setText(getStringConfig("native_slotID", "dt62rndy"));
     }
 
     @Override
