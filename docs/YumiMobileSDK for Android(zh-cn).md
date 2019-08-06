@@ -60,7 +60,7 @@ Java: > JDK 7
 
 ### 2.1 Android-studio 接入
 
-配置聚合主包及各 Network
+配置gradle文件导入YumiMobileSDK
 
 在项目根目录下的 build.gradle 文件中添加以下配置
 
@@ -104,7 +104,7 @@ dependencies {
 
  ### 2.2 Eclipse 接入
 
-**第一步：下载并添加聚合SDK：**
+**第一步：下载并添加SDK：**
 
 >[SDK 下载](http://adsdk.yumimobi.com/Android/Android_Mediation/4.2.0/YumiMobi_SDK_Android_V4.2.0.zip)
 
@@ -126,7 +126,7 @@ dependencies {
 
 <div style="background-color:rgb(228,244,253);padding:10px;">
 <span style="color:rgb(62,113,167);">关于 google_play_service 工程：
-google_play_service 工程非必加，部分平台广告需要 google_play_service 支持，玉米移动广告不需要添加。使用时需要将此工程作为 library 工程，添加到您的工程中。并在 manifest.xml 文件的 &lt;application&gt; 
+google_play_service 工程非必加。使用时需要将此工程作为 library 工程，添加到您的工程中。并在 manifest.xml 文件的 &lt;application&gt; 
 标签内增加以下代码：</span></div>
 <br/>
 
@@ -766,7 +766,6 @@ YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder()
                 .setAdAttributionBackgroundColor(Color.argb(90, 0, 0, 0))
                 .setAdAttributionTextSize(10)
                 .setHideAdAttribution(false)
-                .setHideAdAttribution(new ExpressAdSize(400, 300)) // 宽：400dp; 高：300dp
                 .build();
 ```
 * **setIsDownloadImage** 原生广告返回的 Icon 和大图资源为 Image 对象。如果 setIsDownloadImage 设置为 true，则 SDK 会自动获取图片素材资源，并为您填充 Image 对象中的 Drawable, url, scale 属性；如果 setIsDownloadImage 设置为 false, SDK 将不会自动下载 Icon 和大图的图片资源，返回的 Icon 和大图的 Image 对象只会填充 url 属性，从而允许您自行决定是否下载实际图片，默认为 true
@@ -777,7 +776,6 @@ YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder()
 * **setAdAttributionBackgroundColor** 使用该属性指定广告标识的背景颜色，默认灰色
 * **setAdAttributionTextSize** 使用该属性指定广告标识的字体大小，默认10
 * **setHideAdAttribution** 使用该属性指定广告标识是否隐藏，默认显示
-* **setHideAdAttribution(new ExpressAdSize(width, height))** 传入原生广告容器的 ExpressAdSize(width, height)，广点通平台原生模板 View 需要设置此属性
 
 ## 4. 其它设置 
 
@@ -862,7 +860,7 @@ YumiMobileSDK会通过play-services-ads:17.1.3获取advertising_Id，需要添�
 重要提示：自 Google 移动广告 SDK 17.0.0 版本开始，必须执行此步骤。如果未能添加此 <meta-data> 代码，将会导致崩溃，并显示以下消息："The Google Mobile Ads SDK was initialized incorrectly."
 
 ### 3. android 9.0 适配
-目前一些平台Android SDK暂不支持Android9.0以上操作系统，比如 Mintegral 平台，如果在Android9.0以上系统出现的崩溃，可以通过以下方法解决。
+如果在Android9.0以上系统出现崩溃或广告显示不正常，可以通过以下方法解决。
 
 1. 将targaetSDKveriosn设置为27或者27以下。 
 

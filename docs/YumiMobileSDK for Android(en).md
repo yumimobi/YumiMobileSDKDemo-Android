@@ -55,7 +55,7 @@ Java: > JDK 7
 ## 2. Development Environment Configuration
 ### 2.1 Android Studio
 
-add YumiMobileSDK and other network adapters maven url to project's build.gradle
+add YumiMobileSDK maven url to project's build.gradle
 
 ```groovy
 buildscript {
@@ -71,7 +71,7 @@ allprojets {
 }
 ```
 
-add YumiMobileSDK and other adapters dependencies.
+add YumiMobileSDK dependencies.
 
 ```groovy
 dependencies {
@@ -118,7 +118,7 @@ Create libs folder under the root directory of your project,add YumiMobi_Android
 you can choose to or not to add android-support-v4.jar and/or android-support-v7-appcompat.jar into libs according to your needs. You must use the jar file provided by YUMIMOBI when you need to use v4.jar or v7.jar.
 
 <div style="background-color:rgb(228,244,253);padding:10px;">
-<span style="color:rgb(62,113,167);">About google_play_service project: google_play_service is not mandatory, while some ad platforms need it. YUMIMOBI does not need google_play_service. You need use it as a library and import it into your project. Also, add the ollowing code in tab <application> of your manifest.xml.</span></div>
+<span style="color:rgb(62,113,167);">About google_play_service project: google_play_service is not mandatory. You need use it as a library and import it into your project. Also, add the ollowing code in tab <application> of your manifest.xml.</span></div>
 <br/>
 
 ```xml
@@ -757,7 +757,6 @@ YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder()
                     .setAdAttributionBackgroundColor(Color.argb(90, 0, 0, 0))
                     .setAdAttributionTextSize(10)
                     .setHideAdAttribution(false)
-                    .setHideAdAttribution(new ExpressAdSize(400, 300)) // width: 400dp; height: 300dp
                     .build();
 ```
 * **setIsDownloadImage** Image assets for native ads are returned via instances of NativeContent.Image, which holds a Drawable and a Url. If this option is set to true, the SDK fetches image assets automatically and populates both the Drawable and the Uri for you. If it's set to false, however, the SDK instead populates just the Url field, allowing you to download the actual images at your discretion.Default is true.
@@ -768,7 +767,6 @@ YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder()
 * **setAdAttributionBackgroundColor** use this property to specify the Ad text background color。Default is gray.
 * **setAdAttributionTextSize** use this property to specify the Ad text font size. Default is 10.
 * **setHideAdAttribution** use this property to hide the Ad text. Default is display.
-* **setHideAdAttribution(new ExpressAdSize(width, height))** pass the native ad container's size, the GDT network native ExpressAdView needs to set this property
 
 ## 4. Other settings
 ### 4.1 Proguard
