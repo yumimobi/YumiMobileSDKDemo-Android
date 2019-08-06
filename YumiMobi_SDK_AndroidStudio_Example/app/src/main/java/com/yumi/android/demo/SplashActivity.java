@@ -14,7 +14,7 @@ import com.yumi.android.MActivity;
 import com.yumi.android.sdk.ads.publish.AdError;
 import com.yumi.android.sdk.ads.publish.YumiSplash;
 import com.yumi.android.sdk.ads.publish.listener.IYumiSplashListener;
-import com.yumimobi.ads.demo.R;
+import com.yumimobi.ads.R;
 
 import static com.yumi.android.sdk.ads.publish.YumiSplash.DEFAULT_FETCH_SECONDS;
 
@@ -24,93 +24,103 @@ import static com.yumi.android.sdk.ads.publish.YumiSplash.DEFAULT_FETCH_SECONDS;
  * Created by lgd on 2019-05-30.
  */
 public class SplashActivity extends MActivity {
-	private static final String TAG = "SplashActivity";
-	private YumiSplash mYumiSplash;
-	private View mHackerView;
-	private EditText mFetchTime;
-	private TextView mLogView;
-	private FrameLayout mSplashContainer;
+    private static final String TAG = "SplashActivity";
+    private YumiSplash mYumiSplash;
+    private View mHackerView;
+    private EditText mFetchTime;
+    private TextView mLogView;
+    private boolean canBack = true;
 
-	@Override
-	public void onActivityCreate() {
-		setContentView(R.layout.activity_splash);
-		mLogView = findViewById(R.id.splash_log_text_view);
-		mFetchTime = findViewById(R.id.fetch_time_edit_text);
-		mFetchTime.setText(String.valueOf(DEFAULT_FETCH_SECONDS));
-		mSplashContainer = findViewById(R.id.splash_container);
+    @Override
+    public void onActivityCreate() {
+        setContentView(R.layout.activity_splash);
+        mLogView = findViewById(R.id.splash_log_text_view);
+        mFetchTime = findViewById(R.id.fetch_time_edit_text);
+        mFetchTime.setText(String.valueOf(DEFAULT_FETCH_SECONDS));
+        FrameLayout splashContainer = findViewById(R.id.splash_container);
 
-		SharedPreferences sp = getSharedPreferences("config", MODE_PRIVATE);
-		String key = sp.getString("splash_slotID", "");
-		if (TextUtils.isEmpty(key)) {
-			Toast.makeText(this, "cannot found slot id", Toast.LENGTH_SHORT).show();
-			finish();
-			return;
-		}
+        SharedPreferences sp = getSharedPreferences("config", MODE_PRIVATE);
+        String key = sp.getString("splash_slotID", "");
+        if (TextUtils.isEmpty(key)) {
+            Toast.makeText(this, "没有填入应用ID", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-		mYumiSplash = new YumiSplash(this, mSplashContainer, key);
-		mYumiSplash.setChannelID(channelStr);
-		mYumiSplash.setVersionName(versionStr);
-		mYumiSplash.setLaunchImage(getResources().getDrawable(R.drawable.splash_drawable));
-		mYumiSplash.setSplashListener(new IYumiSplashListener() {
-			@Override
-			public void onSplashAdSuccessToShow() {
-				addLog("onSplashAdSuccessToShow");
-			}
+        mYumiSplash = new YumiSplash(this, splashContainer, key);
+        mYumiSplash.setChannelID(channelStr);
+        mYumiSplash.setVersionName(versionStr);
+        mYumiSplash.setLaunchImage(getResources().getDrawable(R.drawable.splash_drawable));
+        mYumiSplash.setSplashListener(new IYumiSplashListener() {
+            @Override
+            public void onSplashAdSuccessToShow() {
+                addLog("onSplashAdSuccessToShow");
+            }
 
-			@Override
-			public void onSplashAdFailToShow(AdError error) {
-				addLog("onSplashAdFailToShow: " + error);
-				launchMainActivity();
-			}
+            @Override
+            public void onSplashAdFailToShow(AdError error) {
+                addLog("onSplashAdFailToShow: " + error);
+                launchMainActivity();
+                canBack = true;
+            }
 
-			@Override
-			public void onSplashAdClicked() {
-				addLog("onSplashAdClicked");
-			}
+            @Override
+            public void onSplashAdClicked() {
+                addLog("onSplashAdClicked");
+            }
 
-			@Override
-			public void onSplashAdClosed() {
-				addLog("onSplashAdClosed");
-				launchMainActivity();
-			}
-		});
-	}
+            @Override
+            public void onSplashAdClosed() {
+                addLog("onSplashAdClosed");
+                canBack = true;
+                launchMainActivity();
+            }
+        });
+    }
 
-	@Override
-	public void initView() {
-	}
+    @Override
+    public void initView() {
+    }
 
-	@Override
-	public void setListener() {
-	}
+    @Override
+    public void setListener() {
+    }
 
-	@Override
-	public void addContentView(View view, ViewGroup.LayoutParams params) {
-		super.addContentView(view, params);
-		Log.d(TAG, "addContentView: " + view);
-		mHackerView = view;
-	}
+    @Override
+    public void addContentView(View view, ViewGroup.LayoutParams params) {
+        super.addContentView(view, params);
+        Log.d(TAG, "addContentView: " + view);
+        mHackerView = view;
+    }
 
-	private void launchMainActivity() {
-		if (mHackerView != null && mHackerView.getParent() instanceof ViewGroup) {
-			((ViewGroup) mHackerView.getParent()).removeView(mHackerView);
-		}
-	}
+    private void launchMainActivity() {
+        if (mHackerView != null && mHackerView.getParent() instanceof ViewGroup) {
+            ((ViewGroup) mHackerView.getParent()).removeView(mHackerView);
+        }
+    }
 
-	public void loadAd(View view) {
-		mYumiSplash.setFetchTime(getFetchSeconds());
-		mYumiSplash.loadAdAndShowInWindow();
-	}
+    public void loadAd(View view) {
+        canBack = false;
+        mYumiSplash.setFetchTime(getFetchSeconds());
+        mYumiSplash.loadAdAndShowInWindow();
+    }
 
-	private int getFetchSeconds() {
-		if (!TextUtils.isEmpty(mFetchTime.getText().toString().trim())) {
-			return Integer.valueOf(mFetchTime.getText().toString().trim());
-		}
-		return DEFAULT_FETCH_SECONDS;
-	}
+    private int getFetchSeconds() {
+        if (!TextUtils.isEmpty(mFetchTime.getText().toString().trim())) {
+            return Integer.valueOf(mFetchTime.getText().toString().trim());
+        }
+        return DEFAULT_FETCH_SECONDS;
+    }
 
-	private void addLog(String msg) {
-		Log.d(TAG, "addLog: " + msg);
-		mLogView.setText(String.format("%s\n%s", mLogView.getText(), msg));
-	}
+    private void addLog(String msg) {
+        Log.d(TAG, "addLog: " + msg);
+        mLogView.setText(String.format("%s\n%s", mLogView.getText(), msg));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canBack) {
+            super.onBackPressed();
+        }
+    }
 }
