@@ -153,28 +153,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
-            
-            <CheckBox
-                android:id="@+id/cb_isMatchWindowWidth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/check_bg"
-                android:button="@null" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/cb_isMatchWindowWidth"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/cb_isMatchWindowWidth"
-                android:text="BannerMatch" />
 
             <CheckBox
                 android:id="@+id/gdpr_settings_check_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cb_isMatchWindowWidth"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/check_bg"
                 android:button="@null" />

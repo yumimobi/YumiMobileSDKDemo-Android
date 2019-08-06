@@ -55,7 +55,7 @@ Java: > JDK 7
 ## 2. Development Environment Configuration
 ### 2.1 Android Studio
 
-add YumiMobileSDK and other network adapters maven url to project's build.gradle
+add YumiMobileSDK maven url to project's build.gradle
 
 ```groovy
 buildscript {
@@ -67,29 +67,16 @@ buildscript {
 allprojets {
     repositories {
     	jcenter()
-
-        // Optional,It is required when you import SDKs related to Google Server.
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
-        
-        // Optional,If you do not need the ksyun SDK, you can remove the maven url.
-        maven { url "https://dl.bintray.com/yumimobi/thirdparty/" }
-        maven { url "https://dl.bintray.com/yumimobi/ads/" }
-
-        // Optional,If you do not need the Iqzone SDK, you can remove the maven url.
-        maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
     }
 }
 ```
 
-add YumiMobileSDK and other adapters dependencies.
+add YumiMobileSDK dependencies.
 
 ```groovy
 dependencies {
     // YumiMobileSDK main package
-    implementation 'com.yumimobi.ads:mediation:4.1.0'
+    implementation 'com.yumimobi.ads:mediation:4.2.0'
 ｝
 ```
 
@@ -112,7 +99,7 @@ Optional permission.
 
 Add library file to libs.
 
->[SDK Download](http://adsdk.yumimobi.com/Android/Android_Mediation/4.1.0/YumiMobi_SDK_Android_V4.1.0.zip)
+>[SDK Download](http://adsdk.yumimobi.com/Android/Android_Mediation/4.2.0/YumiMobi_SDK_Android_V4.2.0.zip)
 
 All lib files are placed in ..\YumiMobi_SDK_AndroidEclipse_Example\lib in the SDK:
 
@@ -131,7 +118,7 @@ Create libs folder under the root directory of your project,add YumiMobi_Android
 you can choose to or not to add android-support-v4.jar and/or android-support-v7-appcompat.jar into libs according to your needs. You must use the jar file provided by YUMIMOBI when you need to use v4.jar or v7.jar.
 
 <div style="background-color:rgb(228,244,253);padding:10px;">
-<span style="color:rgb(62,113,167);">About google_play_service project: google_play_service is not mandatory, while some ad platforms need it. YUMIMOBI does not need google_play_service. You need use it as a library and import it into your project. Also, add the ollowing code in tab <application> of your manifest.xml.</span></div>
+<span style="color:rgb(62,113,167);">About google_play_service project: google_play_service is not mandatory. You need use it as a library and import it into your project. Also, add the ollowing code in tab <application> of your manifest.xml.</span></div>
 <br/>
 
 ```xml
@@ -327,11 +314,7 @@ public void onBackPressed() {
 
 ```java
 // Display ad
-//
-// delayToShowEnable: Whether to delay the display of the ad
-//  - false: Indicates immediate display, if there is an ad available, it will be displayed immediately, if not, it will not be displayed.
-//  - true: Indicates delayed display. If this method is called, it will be displayed immediately if there is any available ad; if there is no available advertisement, it will automatically pop up the ad when the available advertisement is available (waiting time is uncontrollable), which can be canceled by cancelInterstitialDelayShown() 
-interstitial.showInterstitial(delayToShowEnable);
+interstitial.showInterstitial();
 ```
 
 ```java
@@ -372,8 +355,6 @@ interface IYumiInterstitialListener {
 ```java
 // Determine if an ad is available
 interstitial.isReady();
-// Cancel an ad in a delayed task
-interstitial.cancelInterstitialDelayShown();
 ```
 
 ### 3.3 Rewarded Video
@@ -531,6 +512,12 @@ interface IYumiNativeListener {
     void onLayerFailed(AdError adError);
     // This method is fired when a native ad is clicked
     void onLayerClick();
+    // This method is fired when a ExpressAdView render failed(only gdt ExpressAdView could callback it).
+    void onExpressAdRenderFail(NativeContent content, String errorMsg);
+    // This method is fired when ExpressAdView render success(only gdt ExpressAdView could callback it).
+    void onExpressAdRenderSuccess(NativeContent content);
+    // This method is fired when ExpressAdView closed(only gdt ExpressAdView could callback it).
+    void onExpressAdClosed(NativeContent content);
 }
 ```
 
@@ -599,8 +586,22 @@ private void showNativeAd() {
 
         // creater native ad Continer view，use to show Native ad
         FrameLayout nativeAdContinerView = (FrameLayout) findViewById(R.id.ll_ad_continer);
+        // To detect current content is or not an ExpressAdView
+        if (content.isExpressAdView()) {
+            // If current content is an ExpressAdView, you should get the View by content.getExpressAdView() and then add the 
+            // view into ad container
+            YumiNativeAdView adView = (YumiNativeAdView) getLayoutInflater().inflate(R.layout.activity_native_material, null);
+            adView.removeAllViews();
 
-        // // Assumes that your ad layout is in a file call activity_native_material.xml
+            FrameLayout.LayoutParams videoViewLayout = new FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+            videoViewLayout.gravity = Gravity.CENTER;
+
+            adView.addView(content.getExpressAdView(), videoViewLayout);
+            adView.setNativeAd(content);
+            nativeAdContinerView.setClickable(true);
+            nativeAdContinerView.addView(adView);
+        } else {
+        // Assumes that your ad layout is in a file call activity_native_material.xml
         // in the res/layout folder
         YumiNativeAdView adView = (YumiNativeAdView) getLayoutInflater().inflate(R.layout.activity_native_material, null);
 
@@ -632,6 +633,7 @@ private void showNativeAd() {
         nativeAdContinerView.removeAllViews();
         // add adView to nativeAdContinerView
         nativeAdContinerView.addView(adView);
+        }
     }
 }
 ```
@@ -645,6 +647,11 @@ content.isExpired()
 | ----------- | ----------- | ----------------------------------------------------------------------------------- |
 | true        | expired     | this native ad has expired, showing ads that have expired will not generate revenue |
 | false       | not expired | this native ads are valid                                                           |
+
+* calls destroy() to destroy current content
+```java
+content.destroy() // note, this method is belong to NativeContent not to YumiNative
+```
 
 * Inflate the layout
 
@@ -768,8 +775,6 @@ If your project turn on minifyEnabled, add the following to the proguard file.
 ```c
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,Synthetic,EnclosingMethod
 -keep class com.yumi.android.sdk.ads.** { *;}
--keep class com.yumi.android.sdk.ads.self.**{*;}
--keep class com.yumi.android.sdk.ads.selfmedia.**{*;}
 -keep class com.playableads.**{*;}
 ```
 
@@ -789,7 +794,7 @@ banner.setVersionName(versionName);
 </div>
 
 ### 4.3 GDPR
-This documentation is provided for compliance with the European Union's General Data Protection Regulation (GDPR). If you are collecting consent from your users, you can make use of APIs discussed below to inform YumiMobileSDK and some downstream consumers of this information. Get more information, please visit our official website.
+This documentation is provided for compliance with the European Union's General Data Protection Regulation (GDPR). If you are collecting consent from your users, you can make use of APIs discussed below to inform YumiMobileSDK this information. Get more information, please visit our official website.
 
 #### 4.3.1 Set GDPR
 

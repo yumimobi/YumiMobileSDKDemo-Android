@@ -60,7 +60,7 @@ Java: > JDK 7
 
 ### 2.1 Android-studio 接入
 
-配置聚合主包及各 Network
+配置gradle文件导入YumiMobileSDK
 
 在项目根目录下的 build.gradle 文件中添加以下配置
 
@@ -83,7 +83,7 @@ allprojets {
 ```groovy
 dependencies {
     // YumiMobileSDK 主包
-    implementation 'com.yumimobi.ads:mediation:4.1.0'
+    implementation 'com.yumimobi.ads:mediation:4.2.0'
 ｝
 ```
 
@@ -104,9 +104,9 @@ dependencies {
 
  ### 2.2 Eclipse 接入
 
-**第一步：下载并添加聚合SDK：**
+**第一步：下载并添加SDK：**
 
->[SDK 下载](http://adsdk.yumimobi.com/Android/Android_Mediation/4.1.0/YumiMobi_SDK_Android_V4.1.0.zip)
+>[SDK 下载](http://adsdk.yumimobi.com/Android/Android_Mediation/4.2.0/YumiMobi_SDK_Android_V4.2.0.zip)
 
 玉米移动广告需要的lib文件均放在 ..\YumiMobi_SDK_AndroidEclipse_Example\lib 文件夹下：
 
@@ -126,7 +126,7 @@ dependencies {
 
 <div style="background-color:rgb(228,244,253);padding:10px;">
 <span style="color:rgb(62,113,167);">关于 google_play_service 工程：
-google_play_service 工程非必加，部分平台广告需要 google_play_service 支持，玉米移动广告不需要添加。使用时需要将此工程作为 library 工程，添加到您的工程中。并在 manifest.xml 文件的 &lt;application&gt; 
+google_play_service 工程非必加。使用时需要将此工程作为 library 工程，添加到您的工程中。并在 manifest.xml 文件的 &lt;application&gt; 
 标签内增加以下代码：</span></div>
 <br/>
 
@@ -323,11 +323,7 @@ public void onBackPressed() {
 
 ```java
 // 展示广告
-//
-// delayToShowEnable: 是否延迟展示插屏广告
-//  - false: 表示立即展示，如果有可用插屏广告则立即展示，如果没有就不再展示
-//  - true: 表示延迟展示，调用此方法后，如果有可用插屏广告则立即展示；如果没有可用广告，则会等到有可用广告时，自动弹出插屏广告（等待时间不可控），可以通过 cancelInterstitialDelayShown() 取消该延迟事务
-interstitial.showInterstitial(delayToShowEnable);
+interstitial.showInterstitial();
 ```
 
 ```java
@@ -368,8 +364,6 @@ interface IYumiInterstitialListener {
 ```java
 // 判断是否有可用广告
 interstitial.isReady();
-// 取消延迟展示中的插屏广告
-interstitial.cancelInterstitialDelayShown();
 ```
 
 ### 3.3 激励视频
@@ -527,6 +521,12 @@ interface IYumiNativeListener {
     void onLayerFailed(AdError adError);
     // 点击原生广告时触发此方法
     void onLayerClick();
+    // 原生广告渲染失败时触发此方法（目前只有广点通模板广告会触发此方法）
+    void onExpressAdRenderFail(NativeContent content, String errorMsg);
+    // 原生广告渲染成功时触发此方法（目前只有广点通模板广告会触发此方法）
+    void onExpressAdRenderSuccess(NativeContent content);
+    // 关闭原生广告时触发此方法（目前只有广点通模板广告会触发此方法）
+    void onExpressAdClosed(NativeContent content);
 }
 ```
 
@@ -596,7 +596,20 @@ private void showNativeAd() {
 
         // 获取原生广告父容器，用来显示原生广告
         FrameLayout nativeAdContinerView = (FrameLayout) findViewById(R.id.ll_ad_continer);
+        // 判断当前 content 是否为模板 view
+        if (content.isExpressAdView()) {
+            // 如果当前 content 为模板 View，则通过 content.getExpressAdView() 获取该 View 然后添加到广告容器中
+            YumiNativeAdView adView = (YumiNativeAdView) getLayoutInflater().inflate(R.layout.activity_native_material, null);
+            adView.removeAllViews();
 
+            FrameLayout.LayoutParams videoViewLayout = new FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+            videoViewLayout.gravity = Gravity.CENTER;
+
+            adView.addView(content.getExpressAdView(), videoViewLayout);
+            adView.setNativeAd(content);
+            nativeAdContinerView.setClickable(true);
+            nativeAdContinerView.addView(adView);
+        } else {
         // 填充一个 XML 布局，它的最外层节点为 YumiNativeAdView
         YumiNativeAdView adView = (YumiNativeAdView) getLayoutInflater().inflate(R.layout.activity_native_material, null);
 
@@ -626,6 +639,7 @@ private void showNativeAd() {
         nativeAdContinerView.removeAllViews();
         // 将 adView 添加到父容器中
         nativeAdContinerView.addView(adView);
+        }
     }
 }
 ```
@@ -640,6 +654,11 @@ content.isExpired()
 | ------ | ------ | ------------------------------ |
 | true   | 已过期 | 展示已过期的广告将不会产生收益 |
 | false  | 未过期 | 当前广告可以展示               |
+
+* 通过 destroy 方法销毁当前 content
+```java
+content.destroy() // 注意，此处为 content 对象的 destroy()，非 nativeAd 对象中的 destroy()
+```
 
 * 填充布局
 
@@ -764,11 +783,9 @@ YumiNativeAdOptions nativeAdOptions = new YumiNativeAdOptions.Builder()
 
 如果您的工程需要混淆编译， 请在混淆文件内增加以下内容。
 
-```c
+```
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,Synthetic,EnclosingMethod
 -keep class com.yumi.android.sdk.ads.** { *;}
--keep class com.yumi.android.sdk.ads.self.**{*;}
--keep class com.yumi.android.sdk.ads.selfmedia.**{*;}
 -keep class com.playableads.**{*;}
 ```
 
@@ -788,7 +805,7 @@ banner.setVersionName(versionName);
 </div>
 
 ### 4.3 GDPR
-本文件是为遵守欧洲联盟的一般数据保护条例（GDPR）而提供的。 自 YumiMobileSDK 4.1.0 起，如果您正在收集用户的信息，您可以使用下面提供的 API 将此信息通知给 YumiMobileSDK 和部分三方平台。更多信息请查看我们的官网。
+本文件是为遵守欧洲联盟的一般数据保护条例（GDPR）而提供的。 自 YumiMobileSDK 4.1.0 起，如果您正在收集用户的信息，您可以使用下面提供的 API 将此信息通知给 YumiMobileSDK。更多信息请查看我们的官网。
 
 #### 4.3.1 设置 GDPR
 
@@ -843,7 +860,7 @@ YumiMobileSDK会通过play-services-ads:17.1.3获取advertising_Id，需要添�
 重要提示：自 Google 移动广告 SDK 17.0.0 版本开始，必须执行此步骤。如果未能添加此 <meta-data> 代码，将会导致崩溃，并显示以下消息："The Google Mobile Ads SDK was initialized incorrectly."
 
 ### 3. android 9.0 适配
-目前一些平台Android SDK暂不支持Android9.0以上操作系统，比如 Mintegral 平台，如果在Android9.0以上系统出现的崩溃，可以通过以下方法解决。
+如果在Android9.0以上系统出现崩溃或广告显示不正常，可以通过以下方法解决。
 
 1. 将targaetSDKveriosn设置为27或者27以下。 
 
