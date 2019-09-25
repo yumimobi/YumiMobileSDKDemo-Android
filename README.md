@@ -2,7 +2,7 @@
 
 ## Latest Version
 
-**v4.2.0**
+**v4.3.0**
 
 ## Document
 
