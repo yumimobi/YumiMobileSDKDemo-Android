@@ -76,7 +76,7 @@ add YumiMobileSDK dependencies.
 ```groovy
 dependencies {
     // YumiMobileSDK main package
-    implementation 'com.yumimobi.ads:mediation:4.2.0'
+    implementation 'com.yumimobi.ads:mediation:4.3.0'
 ｝
 ```
 
@@ -99,7 +99,7 @@ Optional permission.
 
 Add library file to libs.
 
->[SDK Download](http://adsdk.yumimobi.com/Android/Android_Mediation/4.2.0/YumiMobi_SDK_Android_V4.2.0.zip)
+>[SDK Download](http://adsdk.yumimobi.com/Android/Android_Mediation/4.3.0/YumiMobi_SDK_Android_V4.3.0.zip)
 
 All lib files are placed in ..\YumiMobi_SDK_AndroidEclipse_Example\lib in the SDK:
 
