@@ -83,7 +83,7 @@ allprojets {
 ```groovy
 dependencies {
     // YumiMobileSDK 主包
-    implementation 'com.yumimobi.ads:mediation:4.2.0'
+    implementation 'com.yumimobi.ads:mediation:4.3.0'
 ｝
 ```
 
@@ -106,7 +106,7 @@ dependencies {
 
 **第一步：下载并添加SDK：**
 
->[SDK 下载](http://adsdk.yumimobi.com/Android/Android_Mediation/4.2.0/YumiMobi_SDK_Android_V4.2.0.zip)
+>[SDK 下载](http://adsdk.yumimobi.com/Android/Android_Mediation/4.3.0/YumiMobi_SDK_Android_V4.3.0.zip)
 
 玉米移动广告需要的lib文件均放在 ..\YumiMobi_SDK_AndroidEclipse_Example\lib 文件夹下：
 
