@@ -37,8 +37,6 @@
             * [4.3.1 设置 GDPR](#431-设置-gdpr)
       * [5. 注意事项](#5-注意事项)
          * [1. Android6.0以上系统权限处理](#1-android60以上系统权限处理)
-         * [2. Google play Server 17.0.0 版本以上配置](#2-google-play-server-1700-版本以上配置)
-         * [3. android 9.0 适配](#3-android-90-适配)
       * [6. 测试广告位](#6-测试广告位)
       
 # YumiMobileSDK Android
@@ -843,26 +841,6 @@ YumiSettings.setGDPRConsent(YumiGDPRStatus.PERSONALIZED);
 ```java
 YumiSettings.runInCheckPermission(true);
 ```
-
-### 2. Google play Server 17.0.0 版本以上配置
-
-YumiMobileSDK会通过play-services-ads:17.1.3获取advertising_Id，需要添加如下配置，避免程序崩溃，以下内容引用自[google官方文档](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#update_your_androidmanifestxml)：
-
-通过在 AndroidManifest.xml 中添加以下 <meta-data> 标记，声明您的应用是 Ad Manager 应用。
-
-```java
-<!-- google player service 17.0.0 版本以上必须得添加 start-->
-<meta-data
-     android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-     android:value="true" />
-<!-- google player service 17.0.0 版本以上必须得添加 end -->
-```
-重要提示：自 Google 移动广告 SDK 17.0.0 版本开始，必须执行此步骤。如果未能添加此 <meta-data> 代码，将会导致崩溃，并显示以下消息："The Google Mobile Ads SDK was initialized incorrectly."
-
-### 3. android 9.0 适配
-如果在Android9.0以上系统出现崩溃或广告显示不正常，可以通过以下方法解决。
-
-1. 将targaetSDKveriosn设置为27或者27以下。 
 
 
 ## 6. 测试广告位
