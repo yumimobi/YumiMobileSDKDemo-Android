@@ -37,8 +37,6 @@
             * [4.3.1 Set GDPR](#431-set-gdpr)
       * [5. Precautions](#5-precautions)
          * [1. Permissions for Android 6.0 and newer versions](#1-permissions-for-android-60-and-newer-versions)
-         * [2. Google Play Server 17.0.0 or higher version configuration](#2-google-play-server-1700-or-higher-version-configuration)
-         * [3. Android9.0 compatibility considerations](#3-android90-compatibility-considerations)
       * [6. Test Slot ID](#6-test-slot-id)
 
 # YumiMobileSDK Android
@@ -831,24 +829,6 @@ When the targetSdkVersion of your app is 23 or above, you can choose the followi
 ```java
 YumiSettings.runInCheckPermission(true);
 ```
-
-
-### 2. Google Play Server 17.0.0 or higher version configuration
-YumiMobileSDK will use the play-services-ads:17.1.3 to obtain the advertising_Id. You need to add the following configuration to avoid the program crash. The following content is quoted from [Google Developers](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#update_your_androidmanifestxml)：
-
-Declare that your app is an Ad Manager app by adding the following <meta-data> tag in your AndroidManifest.xml.
-
-```java
-<meta-data
-     android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-     android:value="true" />
-```
-Important: This step is required as of Google Mobile Ads SDK version 17.0.0. Failure to add this <meta-data> tag results in a crash with the message: "The Google Mobile Ads SDK was initialized incorrectly."
-
-### 3. Android9.0 compatibility considerations 
-At present, Mintegral platform the Android SDK does not support Android9.0 or above. If the app crashes above Android9.0, you can solve by the ways below.
-
-1. Set targaetSDKveriosn to 27 or less
 
 
 
