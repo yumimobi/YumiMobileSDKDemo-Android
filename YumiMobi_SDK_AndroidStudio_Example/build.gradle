@@ -31,6 +31,7 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        maven { url 'http://47.95.29.186:8081/artifactory/gradle-dev-local' }
     }
 }
 
